@@ -5,8 +5,8 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 const brokerAddress = "54.180.41.24";
 const brokerPort = 55427;
-
 var pongCount = 0;
+
 void pubMessage(String topic, String msg) {
   final client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
 
@@ -23,7 +23,7 @@ void pubMessage(String topic, String msg) {
         .withWillMessage('My Will message')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
-    print('EXAMPLE::Mosquitto client connecting....');
+    //print('EXAMPLE::Mosquitto client connecting....');
     client.connectionMessage = connMess;
 
     try {
@@ -49,7 +49,8 @@ void pubMessage(String topic, String msg) {
     final builder = MqttClientPayloadBuilder();
     builder.addString(msg);
     client.publishMessage(pubTopic, MqttQos.exactlyOnce, builder.payload!);
-    await MqttUtilities.asyncSleep(60);
+    print("Publish $topic $msg ${DateTime.now()}");
+    await MqttUtilities.asyncSleep(10);
     client.disconnect();
     return 0;
   }

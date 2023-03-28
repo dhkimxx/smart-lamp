@@ -23,7 +23,6 @@ class _MyAppState extends State<MyApp> {
       pubMessage("order/unit-1", "LED_ON");
       led_on = true;
     }
-    print("pubMessage");
     setState(() {});
   }
 
