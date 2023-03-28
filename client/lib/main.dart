@@ -13,15 +13,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool led_on = false;
+  bool ledOn = false;
 
   void onTapped() {
-    if (led_on) {
+    if (ledOn) {
       pubMessage("order/unit-1", "LED_OFF");
-      led_on = false;
+      ledOn = false;
     } else {
       pubMessage("order/unit-1", "LED_ON");
-      led_on = true;
+      ledOn = true;
     }
     setState(() {});
   }
@@ -58,9 +58,9 @@ class _MyAppState extends State<MyApp> {
                       ),
                       padding: const EdgeInsets.all(100),
                       child: Text(
-                        led_on ? "OFF" : "ON",
+                        ledOn ? "OFF" : "ON",
                         style: TextStyle(
-                          color: led_on ? Colors.black : Colors.white,
+                          color: ledOn ? Colors.black : Colors.white,
                           fontSize: 50,
                           fontWeight: FontWeight.w700,
                         ),
