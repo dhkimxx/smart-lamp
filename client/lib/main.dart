@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:client/MQTT/my_mqtt_client.dart';
+import 'package:client/MQTT/mqtt_client.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,13 +14,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool ledOn = false;
-
+  var mqttClient = MqttClient();
   void onTapped() {
     if (ledOn) {
-      pubMessage("order/unit-1", "LED_OFF");
+      mqttClient.pubMessage("order/unit-1", "LED_OFF");
       ledOn = false;
     } else {
-      pubMessage("order/unit-1", "LED_ON");
+      mqttClient.pubMessage("order/unit-1", "LED_ON");
       ledOn = true;
     }
     setState(() {});
