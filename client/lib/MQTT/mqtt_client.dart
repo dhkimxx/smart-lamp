@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
@@ -8,9 +7,9 @@ const brokerAddress = "54.180.41.24";
 const brokerPort = 55427;
 var pongCount = 0;
 
-class MqttClient {
+class MyMqttClient {
   final client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
-  MqttClient() {
+  MyMqttClient() {
     connect();
   }
   Future<void> connect() async {
