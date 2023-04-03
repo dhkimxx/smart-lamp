@@ -27,26 +27,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 5,
-        foregroundColor: Colors.blue,
         backgroundColor: Colors.white,
-        title: const Text(
-          "Smart Lamp",
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.w500,
+        appBar: AppBar(
+          elevation: 5,
+          foregroundColor: Colors.blue,
+          backgroundColor: Colors.white,
+          title: const Text(
+            "Smart Lamp",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-      ),
-      body: unitExist
-          ? SingleChildScrollView(
-              child: Column(
-                children: const [],
-              ),
-            )
-          : const AddUnitWidget(),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            children: const [
+              AddUnitWidget(),
+            ],
+          ),
+        ));
   }
 }

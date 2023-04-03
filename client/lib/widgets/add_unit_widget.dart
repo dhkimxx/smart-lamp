@@ -6,31 +6,28 @@ class AddUnitWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddUnitScreen(),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              child: const Icon(
-                Icons.add_circle_sharp,
-                size: 70,
-                color: Colors.blue,
-              ),
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddUnitScreen(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.add_circle_sharp,
+              size: 70,
+              color: Colors.blue,
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
