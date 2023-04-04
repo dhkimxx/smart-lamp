@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class Unit extends StatelessWidget {
   final String unitCode;
-  final String unitName;
+
   const Unit({
     super.key,
     required this.unitCode,
-    required this.unitName,
   });
   onTap() {}
 
@@ -31,7 +30,7 @@ class Unit extends StatelessWidget {
               color: Colors.white,
             ),
             Text(
-              unitName,
+              unitCode,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 40,

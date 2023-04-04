@@ -1,4 +1,5 @@
 import 'package:client/widgets/add_unit_widget.dart';
+import 'package:client/widgets/unit_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,15 +14,24 @@ class _HomeScreenState extends State<HomeScreen> {
   bool unitExist = false;
   bool ledOn = false;
   late SharedPreferences prefs;
+  List<String> unitCodeList = [];
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    final units = prefs.getStringList("unitCodes");
-    if (units != null) {
+    final unitCodes = prefs.getStringList("unitCodes");
+    if (unitCodes != null) {
       unitExist = true;
+      unitCodeList = unitCodes;
     } else {
       prefs.setStringList("unitCodes", []);
     }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
   }
 
   @override
@@ -29,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          centerTitle: true,
           elevation: 5,
           foregroundColor: Colors.blue,
           backgroundColor: Colors.white,
@@ -39,11 +50,30 @@ class _HomeScreenState extends State<HomeScreen> {
               fontWeight: FontWeight.w500,
             ),
           ),
+          leading: const IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: null,
+          ),
+          actions: [
+            IconButton(
+              onPressed: initPrefs,
+              icon: const Icon(Icons.replay_circle_filled_sharp),
+            ),
+            IconButton(
+              onPressed: () {
+                prefs.clear();
+                unitCodeList = [];
+                setState(() {});
+              },
+              icon: const Icon(Icons.new_releases_outlined),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: const [
-              AddUnitWidget(),
+            children: [
+              for (var unitCode in unitCodeList) Unit(unitCode: unitCode),
+              const AddUnitWidget(),
             ],
           ),
         ));
