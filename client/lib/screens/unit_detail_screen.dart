@@ -3,16 +3,28 @@ import 'package:flutter/material.dart';
 
 class UnitDetailScreen extends StatelessWidget {
   final String unitCode;
-  UnitDetailScreen({super.key, required this.unitCode});
-  final myMqttClient = MyMqttClient();
+  final String unitName;
+  UnitDetailScreen({
+    super.key,
+    required this.unitCode,
+    required this.unitName,
+  });
+  var myMqttClient = MyMqttClient();
 
   @override
   Widget build(BuildContext context) {
+    myMqttClient.connect();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue,
-        title: Text(unitCode),
+        title: Text(
+          unitName,
+          style: const TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: Center(
         child: Row(

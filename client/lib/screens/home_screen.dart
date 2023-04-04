@@ -23,10 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
     if (unitCodes != null) {
       unitExist = true;
       unitCodeList = unitCodes;
+      for (var unitCode in unitCodes) {
+        final unitName = prefs.getString(unitCode);
+        unitNameMap[unitCode] = unitName!;
+      }
     } else {
       prefs.setStringList("unitCodes", []);
     }
     setState(() {});
+    print(unitNameMap);
   }
 
   @override
@@ -73,7 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              for (var unitCode in unitCodeList) Unit(unitCode: unitCode),
+              for (var unitCode in unitCodeList)
+                Unit(
+                  unitCode: unitCode,
+                  unitName: unitNameMap[unitCode]!,
+                ),
               const AddUnitWidget(),
             ],
           ),

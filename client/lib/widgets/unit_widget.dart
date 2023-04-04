@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 class Unit extends StatelessWidget {
   final String unitCode;
+  final String unitName;
 
   const Unit({
     super.key,
     required this.unitCode,
+    required this.unitName,
   });
 
   @override
@@ -18,6 +20,7 @@ class Unit extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => UnitDetailScreen(
                       unitCode: unitCode,
+                      unitName: unitName,
                     )));
       },
       child: Container(
@@ -37,7 +40,7 @@ class Unit extends StatelessWidget {
               color: Colors.white,
             ),
             Text(
-              unitCode,
+              unitName,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 40,

@@ -9,9 +9,7 @@ var pongCount = 0;
 
 class MyMqttClient {
   final client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
-  MyMqttClient() {
-    connect();
-  }
+
   Future<void> connect() async {
     client.logging(on: false);
     client.setProtocolV311();
