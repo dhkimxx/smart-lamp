@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool ledOn = false;
   late SharedPreferences prefs;
   List<String> unitCodeList = [];
+  Map<String, String> unitNameMap = {};
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();

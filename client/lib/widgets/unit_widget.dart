@@ -1,3 +1,4 @@
+import 'package:client/screens/unit_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class Unit extends StatelessWidget {
@@ -7,12 +8,18 @@ class Unit extends StatelessWidget {
     super.key,
     required this.unitCode,
   });
-  onTap() {}
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UnitDetailScreen(
+                      unitCode: unitCode,
+                    )));
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(
           horizontal: 10,
