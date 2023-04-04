@@ -31,13 +31,19 @@ class UnitDetailScreen extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {
-                      myMqttClient.pubMessage(unitCode, 'ON');
+                      myMqttClient.pubMessage(
+                        unitCode,
+                        'ON',
+                      );
                     },
                     child: const Text('ON'),
                   ),
                   TextButton(
                     onPressed: () {
-                      myMqttClient.pubMessage(unitCode, 'OFF');
+                      myMqttClient.pubMessage(
+                        unitCode,
+                        'OFF',
+                      );
                     },
                     child: const Text('OFF'),
                   ),
