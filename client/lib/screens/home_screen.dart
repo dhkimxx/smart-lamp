@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool ledOn = false;
   late SharedPreferences prefs;
-
   List<UnitModel> unitList = [];
 
   Future initPrefs() async {
@@ -69,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () {
               prefs.clear();
-
               setState(() {});
             },
             icon: const Icon(Icons.new_releases_outlined),

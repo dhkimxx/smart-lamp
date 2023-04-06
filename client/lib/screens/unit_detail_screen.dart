@@ -1,20 +1,51 @@
-import 'package:client/MQTT/mqtt_client.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class UnitDetailScreen extends StatelessWidget {
+import 'package:client/MQTT/mqtt_client.dart';
+import 'package:client/models/unit_model.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class UnitDetailScreen extends StatefulWidget {
   final String unitCode;
   final String unitName;
-  UnitDetailScreen({
+
+  const UnitDetailScreen({
     super.key,
     required this.unitCode,
     required this.unitName,
   });
-  var myMqttClient = MyMqttClient();
 
-  var distance = 50;
+  @override
+  State<UnitDetailScreen> createState() => _UnitDetailScreenState();
+}
+
+class _UnitDetailScreenState extends State<UnitDetailScreen> {
+  int distance = 5000;
+  int time = 10000;
+
+  late SharedPreferences prefs;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final unit = UnitModel.fromJson(
+      jsonDecode(
+        prefs.getString(widget.unitCode)!,
+      ),
+    );
+    distance = unit.distance;
+    time = unit.time;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var myMqttClient = MyMqttClient();
     myMqttClient.connect();
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +53,7 @@ class UnitDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue,
         title: Text(
-          unitName,
+          widget.unitName,
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w500,
@@ -49,7 +80,7 @@ class UnitDetailScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          unitCode,
+                          widget.unitCode,
                           'ON',
                         );
                       },
@@ -58,7 +89,7 @@ class UnitDetailScreen extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          unitCode,
+                          widget.unitCode,
                           'OFF',
                         );
                       },
@@ -92,6 +123,11 @@ class UnitDetailScreen extends StatelessWidget {
                   autofocus: false,
                   initialValue: '$distance',
                   textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    if (value != '') {
+                      distance = int.parse(value);
+                    }
+                  },
                 ),
               ),
               const SizedBox(
