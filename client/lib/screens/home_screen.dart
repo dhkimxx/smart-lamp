@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:client/button/add_unit_button.dart';
+import 'package:client/models/unit_model.dart';
 import 'package:client/screens/add_unit_screen.dart';
 import 'package:client/widgets/unit_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +15,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool unitExist = false;
   bool ledOn = false;
   late SharedPreferences prefs;
-  List<String> unitCodeList = [];
-  Map<String, String> unitNameMap = {};
+
+  List<UnitModel> unitList = [];
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     final unitCodes = prefs.getStringList("unitCodes");
     if (unitCodes != null) {
-      unitExist = true;
-      unitCodeList = unitCodes;
+      unitList = [];
       for (var unitCode in unitCodes) {
-        unitNameMap[unitCode] = prefs.getString(unitCode)!;
+        var unit = UnitModel.fromJson(jsonDecode(prefs.getString(unitCode)!));
+        unitList.add(unit);
       }
     } else {
       prefs.setStringList("unitCodes", []);
     }
     setState(() {});
-    print(unitNameMap);
   }
 
   @override
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () {
               prefs.clear();
-              unitCodeList = [];
+
               setState(() {});
             },
             icon: const Icon(Icons.new_releases_outlined),
@@ -81,10 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            for (var unitCode in unitCodeList)
+            for (var unit in unitList)
               Unit(
-                unitCode: unitCode,
-                unitName: unitNameMap[unitCode]!,
+                unitCode: unit.code,
+                unitName: unit.name,
               ),
             GestureDetector(
                 onTap: () {

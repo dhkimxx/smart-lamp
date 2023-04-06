@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:client/widgets/alter_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,9 +13,10 @@ class AddUnitScreen extends StatefulWidget {
 
 class _AddUnitScreenState extends State<AddUnitScreen> {
   String? inputUnitCode;
-
   String? inputUnitName;
-
+  int defaultDistance = 50;
+  int defaultTime = 10000;
+  Map<String, dynamic> unitInfoJson = {};
   late SharedPreferences prefs;
 
   Future initPrefs() async {
@@ -33,15 +37,26 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
   @override
   Widget build(BuildContext context) {
     createDevice(String? unitCode, String? unitName) {
-      if (unitCode == null || unitName == null) {
-        return;
-      }
       final unitCodes = prefs.getStringList("unitCodes");
-      if (unitCodes!.contains(unitCode)) {
+      if (unitCode == null || unitCode == '') {
+        alterDialog(context, '오류', '디바이스의 고유 코드를 입력하세요.');
+        return;
+      } else if (unitName == null || unitName == '') {
+        alterDialog(context, '오류', '사용할 디바이스 이름(별명)을 입력하세요.');
+        return;
+      } else if (unitCodes!.contains(unitCode)) {
+        alterDialog(context, '오류', '이미 등록된 디바이스의 고유 코드입니다.');
+        return;
       } else {
         unitCodes.add(unitCode);
         prefs.setStringList('unitCodes', unitCodes);
-        prefs.setString(unitCode, unitName);
+        unitInfoJson = {
+          'code': unitCode,
+          'name': unitName,
+          'distance': defaultDistance,
+          'time': defaultTime,
+        };
+        prefs.setString(unitCode, json.encode(unitInfoJson));
       }
       Navigator.pop(context);
     }
