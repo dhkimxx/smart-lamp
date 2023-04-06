@@ -1,4 +1,3 @@
-import 'package:client/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,18 +32,18 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    createDevice(String? unitCode, String? unitName) async {
+    createDevice(String? unitCode, String? unitName) {
       if (unitCode == null || unitName == null) {
         return;
       }
-
       final unitCodes = prefs.getStringList("unitCodes");
       if (unitCodes!.contains(unitCode)) {
       } else {
         unitCodes.add(unitCode);
-        await prefs.setStringList('unitCodes', unitCodes);
-        await prefs.setString(unitCode, unitName);
+        prefs.setStringList('unitCodes', unitCodes);
+        prefs.setString(unitCode, unitName);
       }
+      Navigator.pop(context);
     }
 
     return GestureDetector(
@@ -107,13 +106,6 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
                   child: TextButton(
                     onPressed: () {
                       createDevice(inputUnitCode, inputUnitName);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                          fullscreenDialog: true,
-                        ),
-                      );
                     },
                     child: const Text(
                       '디바이스 생성',
