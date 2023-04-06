@@ -1,3 +1,4 @@
+import 'package:client/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,8 +44,6 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
         unitCodes.add(unitCode);
         await prefs.setStringList('unitCodes', unitCodes);
         await prefs.setString(unitCode, unitName);
-        Navigator.pop(context);
-        print(unitCodes);
       }
     }
 
@@ -108,6 +107,13 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
                   child: TextButton(
                     onPressed: () {
                       createDevice(inputUnitCode, inputUnitName);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                          fullscreenDialog: true,
+                        ),
+                      );
                     },
                     child: const Text(
                       '디바이스 생성',
