@@ -78,6 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(
+                height: 10,
+              ),
               for (var unitCode in unitCodeList)
                 Unit(
                   unitCode: unitCode,
