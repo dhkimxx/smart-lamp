@@ -1,14 +1,13 @@
+import 'package:client/models/unit_model.dart';
 import 'package:client/screens/unit_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class Unit extends StatelessWidget {
-  final String unitCode;
-  final String unitName;
+  final UnitModel unit;
 
   const Unit({
     super.key,
-    required this.unitCode,
-    required this.unitName,
+    required this.unit,
   });
 
   @override
@@ -19,8 +18,7 @@ class Unit extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => UnitDetailScreen(
-                      unitCode: unitCode,
-                      unitName: unitName,
+                      unit: unit,
                     )));
       },
       child: Container(
@@ -51,7 +49,7 @@ class Unit extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    unitName,
+                    unit.unitName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 40,

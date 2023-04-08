@@ -21,15 +21,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    final unitCodes = prefs.getStringList("unitCodes");
-    if (unitCodes != null) {
+    final unitCodeList = prefs.getStringList("unitCodeList");
+    if (unitCodeList != null) {
       unitList = [];
-      for (var unitCode in unitCodes) {
-        var unit = UnitModel.fromJson(jsonDecode(prefs.getString(unitCode)!));
+      for (var unitCode in unitCodeList) {
+        UnitModel unit = UnitModel.fromJsonMap(
+          jsonDecode(prefs.getString(unitCode)!),
+        );
         unitList.add(unit);
       }
     } else {
-      prefs.setStringList("unitCodes", []);
+      prefs.setStringList("unitCodeList", []);
     }
     setState(() {});
   }
@@ -82,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             for (var unit in unitList)
               Unit(
-                unitCode: unit.code,
-                unitName: unit.name,
+                unit: unit,
               ),
             GestureDetector(
                 onTap: () {

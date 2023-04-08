@@ -1,18 +1,15 @@
 import 'dart:convert';
-
 import 'package:client/MQTT/mqtt_client.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UnitDetailScreen extends StatefulWidget {
-  final String unitCode;
-  final String unitName;
+  final UnitModel unit;
 
   const UnitDetailScreen({
     super.key,
-    required this.unitCode,
-    required this.unitName,
+    required this.unit,
   });
 
   @override
@@ -22,14 +19,13 @@ class UnitDetailScreen extends StatefulWidget {
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
   int distance = 5000;
   int time = 10000;
-
   late SharedPreferences prefs;
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    final unit = UnitModel.fromJson(
+    final unit = UnitModel.fromJsonMap(
       jsonDecode(
-        prefs.getString(widget.unitCode)!,
+        prefs.getString(widget.unit.unitCode)!,
       ),
     );
     distance = unit.distance;
@@ -53,7 +49,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.blue,
         title: Text(
-          widget.unitName,
+          widget.unit.unitName,
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w500,
@@ -80,7 +76,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          widget.unitCode,
+                          widget.unit.unitCode,
                           'ON',
                         );
                       },
@@ -89,7 +85,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          widget.unitCode,
+                          widget.unit.unitCode,
                           'OFF',
                         );
                       },
@@ -120,6 +116,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                 width: 50,
                 height: 48,
                 child: TextFormField(
+                  key: Key('$distance'),
                   autofocus: false,
                   initialValue: '$distance',
                   textAlign: TextAlign.center,
@@ -150,7 +147,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

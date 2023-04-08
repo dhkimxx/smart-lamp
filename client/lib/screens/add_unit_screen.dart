@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:client/models/unit_model.dart';
 import 'package:client/widgets/alter_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,19 +11,14 @@ class AddUnitScreen extends StatefulWidget {
 }
 
 class _AddUnitScreenState extends State<AddUnitScreen> {
-  String? inputUnitCode;
-  String? inputUnitName;
-  int defaultDistance = 50;
-  int defaultTime = 10000;
-  Map<String, dynamic> unitInfoJson = {};
   late SharedPreferences prefs;
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    final unitCodes = prefs.getStringList("unitCodes");
-    if (unitCodes != null) {
+    final unitCodeList = prefs.getStringList("unitCodeList");
+    if (unitCodeList != null) {
     } else {
-      prefs.setStringList("unitCodes", []);
+      prefs.setStringList("unitCodeList", []);
     }
   }
 
@@ -36,27 +30,44 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    createDevice(String? unitCode, String? unitName) {
-      final unitCodes = prefs.getStringList("unitCodes");
+    String? inputUnitCode;
+    String? inputUnitName;
+    int defaultDistance = 50;
+    int defaultTime = 10000;
+
+    createDevice({required String? unitCode, required String? unitName}) {
+      final unitCodeList = prefs.getStringList("unitCodeList");
       if (unitCode == null || unitCode == '') {
-        alterDialog(context, '오류', '디바이스의 고유 코드를 입력하세요.');
+        alterDialog(
+          context: context,
+          title: '오류',
+          contents: '디바이스의 고유 코드를 입력하세요.',
+        );
         return;
       } else if (unitName == null || unitName == '') {
-        alterDialog(context, '오류', '사용할 디바이스 이름(별명)을 입력하세요.');
+        alterDialog(
+          context: context,
+          title: '오류',
+          contents: '사용할 디바이스 이름(별명)을 입력하세요.',
+        );
         return;
-      } else if (unitCodes!.contains(unitCode)) {
-        alterDialog(context, '오류', '이미 등록된 디바이스의 고유 코드입니다.');
+      } else if (unitCodeList!.contains(unitCode)) {
+        alterDialog(
+          context: context,
+          title: '오류',
+          contents: '이미 등록된 디바이스의 고유 코드입니다.',
+        );
         return;
       } else {
-        unitCodes.add(unitCode);
-        prefs.setStringList('unitCodes', unitCodes);
-        unitInfoJson = {
-          'code': unitCode,
-          'name': unitName,
-          'distance': defaultDistance,
-          'time': defaultTime,
-        };
-        prefs.setString(unitCode, json.encode(unitInfoJson));
+        unitCodeList.add(unitCode);
+        prefs.setStringList('unitCodeList', unitCodeList);
+        UnitModel unit = UnitModel(
+          unitCode: unitCode,
+          unitName: unitName,
+          distance: defaultDistance,
+          time: defaultTime,
+        );
+        prefs.setString(unitCode, unit.toJsonString());
       }
       Navigator.pop(context);
     }
@@ -120,11 +131,17 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      createDevice(inputUnitCode, inputUnitName);
+                      createDevice(
+                        unitCode: inputUnitCode,
+                        unitName: inputUnitName,
+                      );
                     },
                     child: const Text(
                       '디바이스 생성',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ),

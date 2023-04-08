@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-void alterDialog(context, String title, String contents) {
+void alterDialog(
+    {required context, required String title, required String contents}) {
   showDialog(
       context: context,
       barrierDismissible: false,
