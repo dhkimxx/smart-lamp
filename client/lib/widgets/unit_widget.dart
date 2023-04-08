@@ -15,11 +15,13 @@ class Unit extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => UnitDetailScreen(
-                      unit: unit,
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => UnitDetailScreen(
+              unit: unit,
+            ),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.symmetric(

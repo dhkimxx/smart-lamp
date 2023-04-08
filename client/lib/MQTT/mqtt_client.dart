@@ -28,10 +28,10 @@ class MyMqttClient {
     try {
       await client.connect();
     } on NoConnectionException catch (e) {
-      print('EXAMPLE::client exception - $e');
+      print('client exception - $e');
       client.disconnect();
     } on SocketException catch (e) {
-      print('EXAMPLE::socket exception - $e');
+      print('socket exception - $e');
       client.disconnect();
     }
 
@@ -45,7 +45,7 @@ class MyMqttClient {
     }
   }
 
-  Future<void> pubMessage(String topic, String msg) async {
+  Future<void> pubMessage({required String topic, required String msg}) async {
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
       var pubTopic = topic;
       final builder = MqttClientPayloadBuilder();
@@ -66,9 +66,7 @@ void onDisconnected() {
   print("Disconnected!");
 }
 
-void onConnected() {
-  print("Connected!");
-}
+void onConnected() {}
 
 void pong() {
   pongCount++;

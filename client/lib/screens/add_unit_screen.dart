@@ -32,8 +32,8 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
   Widget build(BuildContext context) {
     String? inputUnitCode;
     String? inputUnitName;
-    int defaultDistance = 50;
-    int defaultTime = 10000;
+    int defaultDistance = 50; //cm
+    int defaultTime = 10; //sec
 
     createDevice({required String? unitCode, required String? unitName}) {
       final unitCodeList = prefs.getStringList("unitCodeList");

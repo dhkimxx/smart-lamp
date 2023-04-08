@@ -17,10 +17,9 @@ class UnitDetailScreen extends StatefulWidget {
 }
 
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
-  int distance = 5000;
-  int time = 10000;
   late SharedPreferences prefs;
-
+  int inputDistance = 50; //cm
+  int inputTime = 10; //sec
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     final unit = UnitModel.fromJsonMap(
@@ -28,8 +27,8 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
         prefs.getString(widget.unit.unitCode)!,
       ),
     );
-    distance = unit.distance;
-    time = unit.time;
+    inputDistance = unit.distance;
+    inputTime = unit.time;
     setState(() {});
   }
 
@@ -43,6 +42,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   Widget build(BuildContext context) {
     var myMqttClient = MyMqttClient();
     myMqttClient.connect();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -76,8 +76,8 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          widget.unit.unitCode,
-                          'ON',
+                          topic: widget.unit.unitCode,
+                          msg: 'ON',
                         );
                       },
                       child: const Text('ON'),
@@ -85,8 +85,8 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     TextButton(
                       onPressed: () {
                         myMqttClient.pubMessage(
-                          widget.unit.unitCode,
-                          'OFF',
+                          topic: widget.unit.unitCode,
+                          msg: 'OFF',
                         );
                       },
                       child: const Text('OFF'),
@@ -99,57 +99,137 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                '감지 거리(cm):  ',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 18,
-                ),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              SizedBox(
-                width: 50,
-                height: 48,
-                child: TextFormField(
-                  key: Key('$distance'),
-                  autofocus: false,
-                  initialValue: '$distance',
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    if (value != '') {
-                      distance = int.parse(value);
-                    }
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.blue),
-                child: TextButton(
-                  onPressed: () {
-                    print(distance);
-                  },
-                  child: const Text(
-                    '확인',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          editDistance(myMqttClient),
+          const SizedBox(
+            height: 10,
           ),
+          editTime(myMqttClient),
         ],
       ),
+    );
+  }
+
+  Row editDistance(MyMqttClient myMqttClient) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          ' 감지 거리(cm):  ',
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 18,
+          ),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        SizedBox(
+          width: 50,
+          height: 48,
+          child: TextFormField(
+            key: Key('$inputDistance'),
+            autofocus: false,
+            initialValue: '$inputDistance',
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              if (value != '') inputDistance = int.parse(value);
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15), color: Colors.blue),
+          child: TextButton(
+            onPressed: () {
+              myMqttClient.pubMessage(
+                topic: "setDistance/${widget.unit.unitCode}",
+                msg: '$inputDistance',
+              );
+              UnitModel newUnit = UnitModel(
+                unitCode: widget.unit.unitCode,
+                unitName: widget.unit.unitName,
+                distance: inputDistance,
+                time: widget.unit.time,
+              );
+              prefs.setString(
+                widget.unit.unitCode,
+                newUnit.toJsonString(),
+              );
+            },
+            child: const Text(
+              '확인',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row editTime(MyMqttClient myMqttClient) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          '점등 지속시간(초):',
+          style: TextStyle(
+            color: Colors.blue,
+            fontSize: 18,
+          ),
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        SizedBox(
+          width: 50,
+          height: 48,
+          child: TextFormField(
+            key: Key('$inputTime'),
+            autofocus: false,
+            initialValue: '$inputTime',
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              if (value != '') inputTime = int.parse(value);
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15), color: Colors.blue),
+          child: TextButton(
+            onPressed: () {
+              myMqttClient.pubMessage(
+                topic: "setTime/${widget.unit.unitCode}",
+                msg: '$inputTime',
+              );
+              UnitModel newUnit = UnitModel(
+                unitCode: widget.unit.unitCode,
+                unitName: widget.unit.unitName,
+                distance: widget.unit.distance,
+                time: inputTime,
+              );
+              prefs.setString(
+                widget.unit.unitCode,
+                newUnit.toJsonString(),
+              );
+            },
+            child: const Text(
+              '확인',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

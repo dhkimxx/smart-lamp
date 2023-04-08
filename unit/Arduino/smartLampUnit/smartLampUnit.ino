@@ -3,17 +3,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 // Update these with values suitable for your network.
 
-String clientId = "unit-1";
+String clientId = "100";
 
-const char* ssid = "921-2.4G";
+const char* ssid = "kdh";
 const char* password = "kpu123456!";
 const char* mqtt_server = "54.180.41.24";
 const int port = 55427;
 
-String topicOrder = "order/" + clientId;
+String topicOrder = clientId;
+String topicSetDistance = "setDistance/" + clientId;
 String topicSetTime = "setTime/" + clientId;
 char *led_state = "OFF";
-int onTime = 10000;  // default led on time 10sec
+int Distance = 50;  // default detection distance 50cm
+int Time = 10000;  // default led on time 10sec (10000msec)
 
 const int LED = 4;
 const int trig = 16;
@@ -108,17 +110,20 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   
   if(!strcmp(topic, topicOrder.c_str())){
-    if(messageTemp == "LED_ON"){
+    if(messageTemp == "ON"){
       led_on();
     }
-    if(messageTemp == "LED_OFF"){
+    if(messageTemp == "OFF"){
       led_off();
     }
-  }
-  else if(!strcmp(topic, topicSetTime.c_str())){
-      onTime = atoi(messageTemp.c_str());
-      Serial.print("set onTime: ");
-      Serial.print(onTime);
+  }else if(!strcmp(topic, topicSetDistance.c_str())){
+      Distance = atoi(messageTemp.c_str());
+      Serial.print("set Distance: ");
+      Serial.println(Distance);
+  }else if(!strcmp(topic, topicSetTime.c_str())){
+      Time = 1000 * atoi(messageTemp.c_str());
+      Serial.print("set Time: ");
+      Serial.println(Time);
   }
 }
 
@@ -162,12 +167,12 @@ void loop() {
   client.loop();
 
   delay(100);
-  if(hc_sr04(50)&& !strcmp(led_state,"OFF")){
+  if(hc_sr04(Distance)&& !strcmp(led_state,"OFF")){
     led_on();
     time_previous = millis();
     loop_flag = true;
   }
-  if((millis() - time_previous >= onTime) && !strcmp(led_state,"ON") && loop_flag){
+  if((millis() - time_previous >= Time) && !strcmp(led_state,"ON") && loop_flag){
     led_off();
   }
 }
