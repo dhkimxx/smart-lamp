@@ -42,7 +42,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   Widget build(BuildContext context) {
     var myMqttClient = MyMqttClient();
     myMqttClient.connect();
-
+    // myMqttClient.disconnect();
     return Scaffold(
       appBar: AppBar(
         elevation: 5,

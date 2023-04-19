@@ -59,7 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         leading: const IconButton(
-          icon: Icon(Icons.menu),
+          icon: Icon(
+            Icons.menu,
+            color: Colors.blue,
+          ),
           onPressed: null,
         ),
         actions: [

@@ -10,6 +10,10 @@ var pongCount = 0;
 class MyMqttClient {
   final client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
 
+  Future<void> disconnect() async {
+    client.disconnect();
+  }
+
   Future<void> connect() async {
     client.logging(on: false);
     client.setProtocolV311();
@@ -18,7 +22,7 @@ class MyMqttClient {
     client.onSubscribed = onSubscribed;
     client.pongCallback = pong;
     final connMess = MqttConnectMessage()
-        .withClientIdentifier('mobile client')
+        .withClientIdentifier('mobileClient')
         .withWillTopic('connected')
         .withWillMessage('mobile client connected')
         .startClean()
@@ -70,4 +74,5 @@ void onConnected() {}
 
 void pong() {
   pongCount++;
+  print(pongCount);
 }
