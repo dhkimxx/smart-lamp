@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:client/MQTT/mqtt_client.dart';
+import 'package:client/service/mqtt_servicet.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +42,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   Widget build(BuildContext context) {
     var myMqttClient = MyMqttClient();
     myMqttClient.connect();
-    // myMqttClient.disconnect();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
