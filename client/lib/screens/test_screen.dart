@@ -26,8 +26,9 @@ class _TestScreenState extends State<TestScreen> {
       final password = _passwordController.text;
 
       try {
+        print("$username, $password");
         final token = await loginUser(username, password);
-        print("로그인 성공");
+
         // 로그인 성공 시 처리할 코드 작성
       } catch (e) {
         // 로그인 실패 시 처리할 코드 작성
