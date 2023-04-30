@@ -5,10 +5,12 @@
 
 String clientId = "100";
 
-const char* ssid = "kdh";
-const char* password = "kpu123456!";
-const char* mqtt_server = "54.180.41.24";
-const int port = 55427;
+// const char* ssid = "921-2.4g";
+// const char* password = "kpu123456!";
+const char* ssid = "";
+const char* password = "";
+const char* mqtt_server = "13.124.243.209";
+const int port = 58355;
 
 String topicOrder = clientId;
 String topicSetDistance = "setDistance/" + clientId;
@@ -138,6 +140,7 @@ void reconnect() {
       client.publish("login", clientId.c_str());
       // ... and resubscribe
       client.subscribe(topicOrder.c_str());
+      client.subscribe(topicSetDistance.c_str());
       client.subscribe(topicSetTime.c_str());
     } else {
       Serial.print("failed, rc=");
