@@ -170,7 +170,7 @@ void loop() {
   client.loop();
 
   delay(100);
-  if(hc_sr04(Distance)&& !strcmp(led_state,"OFF")){
+  if(hc_sr04(Distance) && !strcmp(led_state,"OFF")){
     led_on();
     time_previous = millis();
     loop_flag = true;
@@ -179,8 +179,3 @@ void loop() {
     led_off();
   }
 }
-    
-
-  
-  
-
