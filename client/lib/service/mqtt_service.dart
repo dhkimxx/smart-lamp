@@ -1,11 +1,10 @@
-
 import 'dart:async';
 import 'dart:io';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-const brokerAddress = "54.180.41.24";
-const brokerPort = 55427;
+const brokerAddress = "13.124.243.209";
+const brokerPort = 58355;
 var pongCount = 0;
 
 class MyMqttClient {
