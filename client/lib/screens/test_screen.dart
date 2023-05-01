@@ -22,13 +22,12 @@ class _TestScreenState extends State<TestScreen> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
-      final username = _usernameController.text;
-      final password = _passwordController.text;
+      final userId = _usernameController.text;
+      final userPw = _passwordController.text;
 
       try {
-        print("$username, $password");
-        final token = await loginUser(username, password);
-
+        print("$userId, $userPw");
+        final token = await loginUser(userId, userPw);
         // 로그인 성공 시 처리할 코드 작성
       } catch (e) {
         // 로그인 실패 시 처리할 코드 작성

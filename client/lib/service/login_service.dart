@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-Future<String> loginUser(String username, String password) async {
+Future<String> loginUser(String userId, String userPw) async {
   final response = await http.post(
-    Uri.parse('http://127.0.0.1:8080/api/authenticate'),
+    Uri.parse(
+        'https://smartlampserver-kafop.run.goorm.site:8080/api/authenticate'),
     headers: {
       'Content-Type': 'application/json',
     },
     body: jsonEncode({
-      'username': username,
-      'password': password,
+      'userId': userId,
+      'userPw': userPw,
       // 'authenticated': 'false',
     }),
   );
