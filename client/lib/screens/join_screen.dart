@@ -1,4 +1,4 @@
-import 'package:client/service/login_service.dart';
+import 'package:client/service/join_service.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
@@ -20,18 +20,18 @@ class _TestScreenState extends State<TestScreen> {
     super.dispose();
   }
 
-  void _login() async {
+  void _join() async {
     if (_formKey.currentState!.validate()) {
       final userId = _usernameController.text;
       final userPw = _passwordController.text;
 
       try {
         print("$userId, $userPw");
-        final token = await loginUser(userId, userPw);
+        final token = await joinUser(userId, userPw);
         // 로그인 성공 시 처리할 코드 작성
       } catch (e) {
         // 로그인 실패 시 처리할 코드 작성
-        print("로그인 실패");
+        print("회원가입 실패");
       }
     }
   }
@@ -41,7 +41,7 @@ class _TestScreenState extends State<TestScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '로그인',
+          '회원가입',
           style: TextStyle(
             color: Colors.blue,
             fontSize: 25,
@@ -88,9 +88,9 @@ class _TestScreenState extends State<TestScreen> {
               const SizedBox(height: 16.0),
               Center(
                 child: ElevatedButton(
-                  onPressed: _login,
+                  onPressed: _join,
                   child: const Text(
-                    '로그인',
+                    '회원가입',
                     style: TextStyle(
                       fontSize: 20,
                     ),

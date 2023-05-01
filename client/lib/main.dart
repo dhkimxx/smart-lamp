@@ -1,5 +1,5 @@
 import 'package:client/screens/home_screen.dart';
-import 'package:client/screens/test_screen.dart';
+import 'package:client/screens/join_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
