@@ -34,7 +34,7 @@ class _JoinScreenState extends State<JoinScreen> {
         alterDialog(
           context: context,
           title: '오류',
-          contents: '비밀번호을 확인하세요.',
+          contents: '비밀번호을 다시 확인하세요.',
         );
         return;
       }
@@ -109,7 +109,7 @@ class _JoinScreenState extends State<JoinScreen> {
                 ),
               ),
               TextFormField(
-                controller: _passwordController,
+                controller: _passwordCheckController,
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
