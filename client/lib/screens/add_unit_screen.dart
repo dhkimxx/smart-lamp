@@ -1,4 +1,6 @@
 import 'package:client/models/unit_model.dart';
+import 'package:client/service/api_service.dart';
+import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/alter_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,14 +14,12 @@ class AddUnitScreen extends StatefulWidget {
 
 class _AddUnitScreenState extends State<AddUnitScreen> {
   late SharedPreferences prefs;
+  late List<String> unitList;
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    final unitCodeList = prefs.getStringList("unitCodeList");
-    if (unitCodeList != null) {
-    } else {
-      prefs.setStringList("unitCodeList", []);
-    }
+    unitList = await getUnitList();
+    setState(() {});
   }
 
   @override
@@ -35,8 +35,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
     int defaultDistance = 50; //cm
     int defaultTime = 10; //sec
 
-    createDevice({required String? unitCode, required String? unitName}) {
-      final unitCodeList = prefs.getStringList("unitCodeList");
+    createDevice({required String? unitCode, required String? unitName}) async {
       if (unitCode == null || unitCode == '') {
         alterDialog(
           context: context,
@@ -51,7 +50,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
           contents: '사용할 디바이스 이름(별명)을 입력하세요.',
         );
         return;
-      } else if (unitCodeList!.contains(unitCode)) {
+      } else if (unitList.contains(unitCode)) {
         alterDialog(
           context: context,
           title: '오류',
@@ -59,8 +58,9 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
         );
         return;
       } else {
-        unitCodeList.add(unitCode);
-        prefs.setStringList('unitCodeList', unitCodeList);
+        unitList.add(unitCode);
+        await setUnitList(unitList);
+        putUserInfo();
         UnitModel unit = UnitModel(
           unitCode: unitCode,
           unitName: unitName,

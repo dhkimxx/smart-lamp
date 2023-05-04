@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-const brokerAddress = "13.124.243.209";
-const brokerPort = 58355;
+final brokerAddress = dotenv.env['MQTT_BROKER_URL'].toString();
+final brokerPort = int.parse(dotenv.env['MQTT_BROKER_PORT'].toString());
 var pongCount = 0;
 
 class MyMqttClient {

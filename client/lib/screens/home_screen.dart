@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:client/button/add_unit_button.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:client/screens/add_unit_screen.dart';
+import 'package:client/screens/login_screen.dart';
+import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/unit_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,31 +15,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool ledOn = false;
-  late SharedPreferences prefs;
-  List<UnitModel> unitList = [];
+  late Map<String, dynamic> userInfo = {};
+  late String userName = "";
+  List<UnitModel> unitModelList = [];
 
   Future initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    final unitCodeList = prefs.getStringList("unitCodeList");
-    if (unitCodeList != null) {
-      unitList = [];
-      for (var unitCode in unitCodeList) {
-        UnitModel unit = UnitModel.fromJsonMap(
-          jsonDecode(prefs.getString(unitCode)!),
-        );
-        unitList.add(unit);
-      }
-    } else {
-      prefs.setStringList("unitCodeList", []);
-    }
+    userInfo = await getUserInfo();
+    userName = userInfo["userName"].toString();
+    unitModelList = await getUnitModelList();
     setState(() {});
   }
 
   @override
   void initState() {
-    super.initState();
     initPrefs();
+    super.initState();
+  }
+
+  void _navigateToLoginScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+      (route) => false,
+    );
   }
 
   @override
@@ -51,9 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 5,
         foregroundColor: Colors.blue,
         backgroundColor: Colors.white,
-        title: const Text(
-          "Smart Lamp",
-          style: TextStyle(
+        title: Text(
+          "$userName's Smart Lamps",
+          style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
@@ -71,9 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.replay_circle_filled_sharp),
           ),
           IconButton(
-            onPressed: () {
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.clear();
-              setState(() {});
+              _navigateToLoginScreen();
             },
             icon: const Icon(Icons.new_releases_outlined),
           ),
@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            for (var unit in unitList)
+            for (var unit in unitModelList)
               Unit(
                 unit: unit,
               ),

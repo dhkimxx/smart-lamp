@@ -1,25 +1,26 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
-Future<String> joinUser(String userId, String userPw) async {
+Future<String> joinUser(String userId, String userPw, String userName) async {
+  final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.post(
-    Uri.parse('http://localhost:8080/api/users'),
+    Uri.parse('$baseUrl/api/users'),
     headers: {
       'Content-Type': 'application/json',
     },
     body: jsonEncode({
       'userId': userId,
       'userPw': userPw,
-      // 'authenticated': 'false',
+      'userName': userName,
     }),
   );
-  print("${response.statusCode}");
 
   if (response.statusCode == 201) {
-    print("join success");
+    print("join success ${response.statusCode}");
     return response.body;
   } else {
-    throw Exception('Failed to join user');
+    throw Exception('Failed to join user ${response.statusCode}');
   }
 }

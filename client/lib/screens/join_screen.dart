@@ -1,4 +1,4 @@
-import 'package:client/screens/home_screen.dart';
+import 'package:client/screens/login_screen.dart';
 import 'package:client/service/join_service.dart';
 import 'package:client/widgets/alter_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -12,50 +12,46 @@ class JoinScreen extends StatefulWidget {
 
 class _JoinScreenState extends State<JoinScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _passwordCheckController = TextEditingController();
+  final _userIdController = TextEditingController();
+  final _userNameController = TextEditingController();
+  final _userPwController = TextEditingController();
+  final _userPwCheckController = TextEditingController();
 
   @override
   void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _passwordCheckController.dispose();
+    _userIdController.dispose();
+    _userNameController.dispose();
+    _userPwController.dispose();
+    _userPwCheckController.dispose();
     super.dispose();
   }
 
   void _join() async {
     if (_formKey.currentState!.validate()) {
-      final userId = _usernameController.text;
-      final userPw = _passwordController.text;
-      final userPwCheck = _passwordCheckController.text;
-
-      if (userPw != userPwCheck) {
-        alterDialog(
-          context: context,
-          title: '오류',
-          contents: '비밀번호을 다시 확인하세요.',
-        );
-        return;
-      }
+      final userId = _userIdController.text;
+      final userPw = _userPwController.text;
+      final userName = _userNameController.text;
 
       try {
-        print("$userId, $userPw");
-        final token = await joinUser(userId, userPw);
-        _navigateToHomeScreen();
-        // 로그인 성공 시 처리할 코드 작성
-      } catch (e) {
-        // 로그인 실패 시 처리할 코드 작성
-        print("회원가입 실패");
+        final token = await joinUser(userId, userPw, userName);
+        _navigateToLoginScreen();
+        alterDialog(
+          context: context,
+          title: "회원가입 완료",
+          contents: "회원가입이 완료되었습니다.",
+        );
+      } on Exception catch (e) {
+        alterDialog(context: context, title: "Error", contents: "$e");
       }
     }
   }
 
-  void _navigateToHomeScreen() {
-    Navigator.of(context).push(
+  void _navigateToLoginScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
+        builder: (context) => const LoginScreen(),
       ),
+      (route) => false,
     );
   }
 
@@ -71,23 +67,23 @@ class _JoinScreenState extends State<JoinScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        leading: const BackButton(
+          color: Colors.blue,
+        ),
         backgroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(30.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 30,
-              ),
               TextFormField(
-                controller: _usernameController,
+                controller: _userIdController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your username';
+                    return '사용자 아이디를 입력하세요.';
                   }
                   return null;
                 },
@@ -96,11 +92,23 @@ class _JoinScreenState extends State<JoinScreen> {
                 ),
               ),
               TextFormField(
-                controller: _passwordController,
+                controller: _userNameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return '사용자 이름을 입력하세요.';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  hintText: '이름',
+                ),
+              ),
+              TextFormField(
+                controller: _userPwController,
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return '사용자 비밀번호를 입력하세요.';
                   }
                   return null;
                 },
@@ -109,11 +117,14 @@ class _JoinScreenState extends State<JoinScreen> {
                 ),
               ),
               TextFormField(
-                controller: _passwordCheckController,
+                controller: _userPwCheckController,
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return '다시 한번 사용자 비밀번호를 입력하세요.';
+                  } else if (_userPwController.text !=
+                      _userPwCheckController.text) {
+                    return '비밀번호가 일치한지 확인하세요.';
                   }
                   return null;
                 },
