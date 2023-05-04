@@ -20,9 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List<UnitModel> unitModelList = [];
 
   Future initPrefs() async {
-    userInfo = await getUserInfo();
+    userInfo = await getUserInfoPrefs();
     userName = userInfo["userName"].toString();
-    unitModelList = await getUnitModelList();
+    unitModelList = await getUnitModelListPrefs();
     setState(() {});
   }
 
@@ -57,16 +57,16 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        leading: const IconButton(
-          icon: Icon(
+        leading: IconButton(
+          icon: const Icon(
             Icons.menu,
             color: Colors.blue,
           ),
-          onPressed: null,
+          onPressed: () {},
         ),
         actions: [
           IconButton(
-            onPressed: initPrefs,
+            onPressed: () {},
             icon: const Icon(Icons.replay_circle_filled_sharp),
           ),
           IconButton(

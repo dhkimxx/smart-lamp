@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:client/models/unit_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<bool> getIsLogined() async {
+// isLogined
+Future<bool> getIsLoginedPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final isLogined = prefs.getBool("isLogined");
   if (isLogined == null) {
@@ -13,12 +14,13 @@ Future<bool> getIsLogined() async {
   }
 }
 
-Future<void> setIsLogined(bool isLogined) async {
+Future<void> setIsLoginedPrefs(bool isLogined) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool("isLogined", isLogined);
 }
 
-Future<Map<String, dynamic>> getUserInfo() async {
+// userInfo
+Future<Map<String, dynamic>> getUserInfoPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final userInfo = prefs.getString("userInfo");
   if (userInfo == null) {
@@ -28,13 +30,25 @@ Future<Map<String, dynamic>> getUserInfo() async {
   }
 }
 
-Future<void> setUserInfo(String userInfo) async {
+Future<void> setUserInfoPrefs(String userInfo) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString("userInfo", userInfo);
 }
 
-Future<List<String>> getUnitList() async {
-  final userInfo = await getUserInfo();
+// unitInfo
+Future<void> setUnitInfoPrefs(UnitModel unit) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString(unit.unitCode, unit.toJson());
+}
+
+Future<String> getUnitInfoPrefs(String unitCode) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString(unitCode).toString();
+}
+
+// unitList
+Future<List<String>> getUnitListPrefs() async {
+  final userInfo = await getUserInfoPrefs();
   if (userInfo['unitList'] == null) {
     return <String>[];
   } else {
@@ -43,21 +57,20 @@ Future<List<String>> getUnitList() async {
   }
 }
 
-Future<void> setUnitList(List<String> newUnitList) async {
-  final newUserInfo = await getUserInfo();
-  print(newUserInfo['unitList']);
-  print(newUnitList);
+Future<void> setUnitListPrefs(List<String> newUnitList) async {
+  final newUserInfo = await getUserInfoPrefs();
   newUserInfo['unitList'] = newUnitList;
-  await setUserInfo(jsonEncode(newUserInfo));
+  await setUserInfoPrefs(jsonEncode(newUserInfo));
 }
 
-Future<List<UnitModel>> getUnitModelList() async {
+// unitModelList
+Future<List<UnitModel>> getUnitModelListPrefs() async {
   List<UnitModel> unitModelList = [];
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> unitList = await getUnitList();
+  List<String> unitList = await getUnitListPrefs();
   for (var unitCode in unitList) {
+    final unitInfo = await getUnitInfoPrefs(unitCode);
     UnitModel unit = UnitModel.fromJsonMap(
-      jsonDecode(prefs.getString(unitCode).toString()),
+      jsonDecode(unitInfo),
     );
     unitModelList.add(unit);
   }

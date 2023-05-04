@@ -21,9 +21,9 @@ class _MyAppState extends State<MyApp> {
   late bool isLogined = false;
 
   Future initPrefs() async {
-    isLogined = await getIsLogined();
+    isLogined = await getIsLoginedPrefs();
     isInitialized = true;
-    getUnitList();
+    getUnitListPrefs();
     setState(() {});
   }
 

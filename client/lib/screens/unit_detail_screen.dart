@@ -156,7 +156,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
               );
               prefs.setString(
                 widget.unit.unitCode,
-                newUnit.toJsonString(),
+                newUnit.toJson(),
               );
             },
             child: const Text(
@@ -218,7 +218,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
               );
               prefs.setString(
                 widget.unit.unitCode,
-                newUnit.toJsonString(),
+                newUnit.toJson(),
               );
             },
             child: const Text(

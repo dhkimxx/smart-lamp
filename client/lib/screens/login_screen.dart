@@ -31,8 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         final userInfo = await loginUser(userId, userPw);
-        setUserInfo(userInfo);
-        setIsLogined(true);
+        setUserInfoPrefs(userInfo);
+        setIsLoginedPrefs(true);
         _navigateToHomeScreen();
       } on Exception catch (e) {
         alterDialog(context: context, title: "Error", contents: "$e");

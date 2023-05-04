@@ -1,5 +1,4 @@
 import 'package:client/models/unit_model.dart';
-import 'package:client/service/api_service.dart';
 import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/alter_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
 
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
-    unitList = await getUnitList();
+    unitList = await getUnitListPrefs();
     setState(() {});
   }
 
@@ -59,17 +58,26 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
         return;
       } else {
         unitList.add(unitCode);
-        await setUnitList(unitList);
-        putUserInfo();
-        UnitModel unit = UnitModel(
+
+        UnitModel newUnit = UnitModel(
           unitCode: unitCode,
           unitName: unitName,
           distance: defaultDistance,
           time: defaultTime,
         );
-        prefs.setString(unitCode, unit.toJsonString());
+
+        //   try {
+        //     await postUnitInfo(newUnit);
+        //   } on Exception catch (e) {
+        //     alterDialog(context: context, title: "Error", contents: "$e");
+        //   }
+
+        //   await putUserInfo();
+        //   await setUnitInfoPrefs(newUnit);
+        //   await setUnitListPrefs(unitList);
+        //   print(getUnitListPrefs());
+        //   Navigator.pop(context);
       }
-      Navigator.pop(context);
     }
 
     return GestureDetector(

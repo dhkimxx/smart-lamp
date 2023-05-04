@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class UnitModel {
-  final dynamic unitCode;
+  final String unitCode;
   final String unitName;
   final int distance;
   final int time;
@@ -14,16 +14,15 @@ class UnitModel {
   });
 
   UnitModel.fromJsonMap(Map<String, dynamic> json)
-      : unitCode = json['code'],
-        unitName = json['name'],
+      : unitCode = json['unitCode'].toString(),
+        unitName = json['unitName'].toString(),
         distance = json['distance'],
         time = json['time'];
 
-  String toJsonString() {
-    Map<String, dynamic> unitInfoJson = {};
-    unitInfoJson = {
-      'code': unitCode,
-      'name': unitName,
+  String toJson() {
+    Map<String, dynamic> unitInfoJson = {
+      'unitCode': unitCode,
+      'unitName': unitName,
       'distance': distance,
       'time': time,
     };
