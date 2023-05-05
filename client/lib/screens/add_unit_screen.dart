@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:client/models/unit_model.dart';
+import 'package:client/screens/home_screen.dart';
+import 'package:client/service/api_service.dart';
 import 'package:client/service/prefs_service.dart';
-import 'package:client/widgets/alter_dialog_widget.dart';
+import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddUnitScreen extends StatefulWidget {
   const AddUnitScreen({super.key});
@@ -12,11 +15,11 @@ class AddUnitScreen extends StatefulWidget {
 }
 
 class _AddUnitScreenState extends State<AddUnitScreen> {
-  late SharedPreferences prefs;
+  late Map<String, dynamic> userInfo;
   late List<String> unitList;
 
   Future initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
+    userInfo = await getUserPrefs();
     unitList = await getUnitListPrefs();
     setState(() {});
   }
@@ -25,6 +28,14 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
   void initState() {
     super.initState();
     initPrefs();
+  }
+
+  void _navigateToHomeScreen() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+        (route) => false);
   }
 
   @override
@@ -57,8 +68,6 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
         );
         return;
       } else {
-        unitList.add(unitCode);
-
         UnitModel newUnit = UnitModel(
           unitCode: unitCode,
           unitName: unitName,
@@ -66,17 +75,21 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
           time: defaultTime,
         );
 
-        //   try {
-        //     await postUnitInfo(newUnit);
-        //   } on Exception catch (e) {
-        //     alterDialog(context: context, title: "Error", contents: "$e");
-        //   }
-
-        //   await putUserInfo();
-        //   await setUnitInfoPrefs(newUnit);
-        //   await setUnitListPrefs(unitList);
-        //   print(getUnitListPrefs());
-        //   Navigator.pop(context);
+        try {
+          loadingDialog(context: context, text: "디바이스 정보를 등록하는 중...");
+          await postUnitInfo(newUnit);
+          final newUnitList = unitList;
+          final newUserInfo = userInfo;
+          newUnitList.add(unitCode);
+          newUserInfo['unitList'] = newUnitList;
+          await putUserInfo(jsonEncode(newUserInfo));
+          await setUnitInfoPrefs(unitCode, newUnit.toJson());
+          await setUserInfoPrefs(jsonEncode(newUserInfo));
+          _navigateToHomeScreen();
+        } on Exception catch (e) {
+          Navigator.pop(context);
+          alterDialog(context: context, title: "Error", contents: "$e");
+        }
       }
     }
 

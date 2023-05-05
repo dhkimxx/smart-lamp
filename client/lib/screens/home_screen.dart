@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<UnitModel> unitModelList = [];
 
   Future initPrefs() async {
-    userInfo = await getUserInfoPrefs();
+    userInfo = await getUserPrefs();
     userName = userInfo["userName"].toString();
     unitModelList = await getUnitModelListPrefs();
     setState(() {});
@@ -50,25 +50,14 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 5,
         foregroundColor: Colors.blue,
         backgroundColor: Colors.white,
-        title: Text(
-          "$userName's Smart Lamps",
-          style: const TextStyle(
+        title: const Text(
+          "Smart Lamp",
+          style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.w500,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.menu,
-            color: Colors.blue,
-          ),
-          onPressed: () {},
-        ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.replay_circle_filled_sharp),
-          ),
           IconButton(
             onPressed: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -79,9 +68,39 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: ListView(
+        padding: EdgeInsets.zero,
+        children: const <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text("MENU"),
+          ),
+          ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+            tileColor: Colors.red,
+            trailing: Icon(Icons.more_vert),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              child: Text(
+                "$userName님, 어서오세요.",
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20,
+                ),
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -89,6 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Unit(
                 unit: unit,
               ),
+            const SizedBox(
+              height: 20,
+            ),
             GestureDetector(
                 onTap: () {
                   Navigator.push(

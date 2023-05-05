@@ -18,7 +18,7 @@ Future<String> loginUser(String userId, String userPw) async {
 
   if (response.statusCode == 200) {
     print("login success ${response.statusCode}");
-    return response.body;
+    return utf8.decode(response.bodyBytes);
   } else {
     throw Exception('Failed to login user ${response.statusCode}');
   }

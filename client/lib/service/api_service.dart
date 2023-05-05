@@ -1,14 +1,13 @@
+import 'dart:convert';
+
 import 'package:client/models/unit_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-Future<String> putUserInfo() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  final userInfo = prefs.getString("userInfo");
+Future<void> putUserInfo(String userInfo) async {
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.put(
-    Uri.parse('$baseUrl/api/users'),
+    Uri.parse('$baseUrl/api/user'),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -16,27 +15,39 @@ Future<String> putUserInfo() async {
   );
   if (response.statusCode == 201) {
     print("Succeed to put user ${response.statusCode}");
-    return response.body;
   } else {
+    print("Failed to put user ${response.statusCode}");
     throw Exception('Failed to put user ${response.statusCode}');
   }
 }
 
-Future<String> postUnitInfo(UnitModel unit) async {
-  final unitInfo = unit.toJson();
+Future<void> postUnitInfo(UnitModel unit) async {
   final baseUrl = dotenv.env['BASE_URL'];
-  final response = await http.put(
-    Uri.parse('$baseUrl/api/units'),
+  final response = await http.post(
+    Uri.parse('$baseUrl/api/unit'),
     headers: {
       'Content-Type': 'application/json',
     },
-    body: unitInfo,
+    body: unit.toJson(),
   );
 
   if (response.statusCode == 201) {
-    print("Succeeded to put unit ${response.statusCode}");
-    return response.body;
+    print("Succeeded to post unit ${response.statusCode}");
   } else {
-    throw Exception('Failed to put unit ${response.statusCode}');
+    print("Failed to post user ${response.statusCode}");
+    throw Exception('Failed to post unit ${response.statusCode}');
+  }
+}
+
+Future<String> getUnitInfo(String unitCode) async {
+  final baseUrl = dotenv.env['BASE_URL'];
+  final response = await http.get(Uri.parse('$baseUrl/api/unit/$unitCode'));
+
+  if (response.statusCode == 200) {
+    print("Succeeded to get unit ${response.statusCode}");
+    return utf8.decode(response.bodyBytes);
+  } else {
+    print("Failed to get unit ${response.statusCode}");
+    throw Exception('Failed to get unit ${response.statusCode}');
   }
 }

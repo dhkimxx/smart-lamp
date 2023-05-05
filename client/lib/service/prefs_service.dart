@@ -19,8 +19,8 @@ Future<void> setIsLoginedPrefs(bool isLogined) async {
   prefs.setBool("isLogined", isLogined);
 }
 
-// userInfo
-Future<Map<String, dynamic>> getUserInfoPrefs() async {
+// user
+Future<Map<String, dynamic>> getUserPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final userInfo = prefs.getString("userInfo");
   if (userInfo == null) {
@@ -35,20 +35,21 @@ Future<void> setUserInfoPrefs(String userInfo) async {
   await prefs.setString("userInfo", userInfo);
 }
 
-// unitInfo
-Future<void> setUnitInfoPrefs(UnitModel unit) async {
+// unit
+Future<void> setUnitInfoPrefs(String unitCode, String unitInfo) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString(unit.unitCode, unit.toJson());
+  prefs.setString(unitCode, unitInfo);
 }
 
-Future<String> getUnitInfoPrefs(String unitCode) async {
+Future<UnitModel> getUnitPrefs(String unitCode) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString(unitCode).toString();
+  return UnitModel.fromJsonMap(
+      jsonDecode(prefs.getString(unitCode).toString()));
 }
 
 // unitList
 Future<List<String>> getUnitListPrefs() async {
-  final userInfo = await getUserInfoPrefs();
+  final userInfo = await getUserPrefs();
   if (userInfo['unitList'] == null) {
     return <String>[];
   } else {
@@ -57,21 +58,12 @@ Future<List<String>> getUnitListPrefs() async {
   }
 }
 
-Future<void> setUnitListPrefs(List<String> newUnitList) async {
-  final newUserInfo = await getUserInfoPrefs();
-  newUserInfo['unitList'] = newUnitList;
-  await setUserInfoPrefs(jsonEncode(newUserInfo));
-}
-
 // unitModelList
 Future<List<UnitModel>> getUnitModelListPrefs() async {
   List<UnitModel> unitModelList = [];
   List<String> unitList = await getUnitListPrefs();
   for (var unitCode in unitList) {
-    final unitInfo = await getUnitInfoPrefs(unitCode);
-    UnitModel unit = UnitModel.fromJsonMap(
-      jsonDecode(unitInfo),
-    );
+    UnitModel unit = await getUnitPrefs(unitCode);
     unitModelList.add(unit);
   }
   return unitModelList;

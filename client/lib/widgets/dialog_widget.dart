@@ -39,3 +39,23 @@ void alterDialog({
         );
       });
 }
+
+void loadingDialog({
+  required context,
+  required String text,
+}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Row(
+          children: <Widget>[
+            const CircularProgressIndicator(),
+            const SizedBox(width: 20),
+            Text(text),
+          ],
+        ),
+      );
+    },
+  );
+}

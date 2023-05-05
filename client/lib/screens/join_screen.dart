@@ -1,6 +1,6 @@
 import 'package:client/screens/login_screen.dart';
 import 'package:client/service/join_service.dart';
-import 'package:client/widgets/alter_dialog_widget.dart';
+import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 class JoinScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _JoinScreenState extends State<JoinScreen> {
       final userName = _userNameController.text;
 
       try {
-        final token = await joinUser(userId, userPw, userName);
+        await joinUser(userId, userPw, userName);
         _navigateToLoginScreen();
         alterDialog(
           context: context,
