@@ -32,15 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  void _navigateToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-      (route) => false,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,34 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.clear();
-              _navigateToLoginScreen();
-            },
-            icon: const Icon(Icons.new_releases_outlined),
-          ),
-        ],
+        actions: const [],
       ),
-      drawer: ListView(
-        padding: EdgeInsets.zero,
-        children: const <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text("MENU"),
-          ),
-          ListTile(
-            leading: Icon(Icons.message),
-            title: Text('Messages'),
-            tileColor: Colors.red,
-            trailing: Icon(Icons.more_vert),
-          ),
-        ],
-      ),
+      drawer: const NavigationDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -125,6 +91,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const AddUnitButton()),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class NavigationDrawer extends StatelessWidget {
+  const NavigationDrawer({super.key});
+
+  void _navigateToLoginScreen(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+        (route) => false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: TextButton(
+        onPressed: () {
+          _navigateToLoginScreen(context);
+        },
+        child: const Text("로그아웃"),
       ),
     );
   }
