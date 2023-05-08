@@ -2,7 +2,9 @@ import 'package:client/button/add_unit_button.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:client/screens/add_unit_screen.dart';
 import 'package:client/screens/login_screen.dart';
+import 'package:client/service/login_service.dart';
 import 'package:client/service/prefs_service.dart';
+import 'package:client/widgets/dialog_widget.dart';
 import 'package:client/widgets/unit_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: const [],
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.account_tree_outlined),
+          )
+        ],
       ),
       drawer: const NavigationDrawer(),
       body: SingleChildScrollView(
@@ -112,12 +119,29 @@ class NavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: TextButton(
-        onPressed: () {
-          _navigateToLoginScreen(context);
-        },
-        child: const Text("로그아웃"),
+    return SizedBox(
+      width: 150,
+      child: Drawer(
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () async {
+                loadingDialog(context: context, text: "로그아웃중...");
+                logoutUser();
+                _navigateToLoginScreen(context);
+              },
+              child: const Text(
+                "로그아웃",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

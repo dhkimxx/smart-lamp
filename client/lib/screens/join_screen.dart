@@ -33,6 +33,7 @@ class _JoinScreenState extends State<JoinScreen> {
       final userName = _userNameController.text;
 
       try {
+        loadingDialog(context: context, text: "사용자 등록 요청중...");
         await joinUser(userId, userPw, userName);
         _navigateToLoginScreen();
         alterDialog(
