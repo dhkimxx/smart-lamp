@@ -21,6 +21,24 @@ Future<void> putUserInfo(String userInfo) async {
   }
 }
 
+Future<void> deleteUnitInfo(UnitModel unit) async {
+  final baseUrl = dotenv.env['BASE_URL'];
+  final response = await http.delete(
+    Uri.parse('$baseUrl/api/unit'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: unit.toJson(),
+  );
+
+  if (response.statusCode == 200) {
+    print("Succeeded to delete unit ${response.statusCode}");
+  } else {
+    print("Failed to delete unit ${response.statusCode}");
+    throw Exception('Failed to delete unit ${response.statusCode}');
+  }
+}
+
 Future<void> postUnitInfo(UnitModel unit) async {
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.post(
@@ -34,7 +52,7 @@ Future<void> postUnitInfo(UnitModel unit) async {
   if (response.statusCode == 201) {
     print("Succeeded to post unit ${response.statusCode}");
   } else {
-    print("Failed to post user ${response.statusCode}");
+    print("Failed to post unit ${response.statusCode}");
     throw Exception('Failed to post unit ${response.statusCode}');
   }
 }

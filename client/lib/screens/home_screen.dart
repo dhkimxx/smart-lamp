@@ -2,7 +2,7 @@ import 'package:client/button/add_unit_button.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:client/screens/add_unit_screen.dart';
 import 'package:client/screens/login_screen.dart';
-import 'package:client/service/login_service.dart';
+import 'package:client/service/login_logout_service.dart';
 import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
 import 'package:client/widgets/unit_widget.dart';
@@ -78,8 +78,26 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             for (var unit in unitModelList)
-              Unit(
-                unit: unit,
+              Dismissible(
+                key: Key(unit.unitCode),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) {
+                  unitDeleteAlterDialog(context: context, unit: unit);
+                },
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  color: Colors.red,
+                  child: const Text(
+                    "삭제  ",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                child: Unit(
+                  unit: unit,
+                ),
               ),
             const SizedBox(
               height: 20,
@@ -130,8 +148,17 @@ class NavigationDrawer extends StatelessWidget {
             TextButton(
               onPressed: () async {
                 loadingDialog(context: context, text: "로그아웃중...");
-                logoutUser();
-                _navigateToLoginScreen(context);
+
+                try {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.clear();
+                  await logoutUser();
+                  _navigateToLoginScreen(context);
+                } on Exception catch (e) {
+                  _navigateToLoginScreen(context);
+                  alterDialog(context: context, title: "Error", contents: "$e");
+                }
               },
               child: const Text(
                 "로그아웃",

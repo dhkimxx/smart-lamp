@@ -47,6 +47,16 @@ Future<UnitModel> getUnitPrefs(String unitCode) async {
       jsonDecode(prefs.getString(unitCode).toString()));
 }
 
+Future<void> deleteUnitPrefs(String unitCode) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove(unitCode);
+  final List<String> unitList = await getUnitListPrefs();
+  unitList.remove(unitCode);
+  Map<String, dynamic> userInfo = await getUserPrefs();
+  userInfo["unitList"] = unitList;
+  await setUserInfoPrefs(jsonEncode(userInfo));
+}
+
 // unitList
 Future<List<String>> getUnitListPrefs() async {
   final userInfo = await getUserPrefs();
