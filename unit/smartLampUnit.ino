@@ -3,12 +3,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 // Update these with values suitable for your network.
 
-String clientId = "100";
+String clientId = "101";
 
-// const char* ssid = "921-2.4g";
-// const char* password = "kpu123456!";
-const char* ssid = "";
-const char* password = "";
+const char* ssid = "921-2.4G";
+const char* password = "kpu123456!";
+// const char* ssid = "myhomewifi2.4g";
+// const char* password = "wifi82825535";
 const char* mqtt_server = "13.124.243.209";
 const int port = 58355;
 
@@ -69,10 +69,6 @@ int hc_sr04(int target){
   }else{
     return 0;
   }
-}
-
-int pir(){
-  return 0;
 }
 
 void setup_wifi() {
