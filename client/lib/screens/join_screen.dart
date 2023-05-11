@@ -1,4 +1,4 @@
-import 'package:client/screens/login_screen.dart';
+import 'package:client/navigator/screen_navigator.dart';
 import 'package:client/service/join_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,25 +35,18 @@ class _JoinScreenState extends State<JoinScreen> {
       try {
         loadingDialog(context: context, text: "사용자 등록 요청중...");
         await joinUser(userId, userPw, userName);
-        _navigateToLoginScreen();
+        if (!mounted) return;
+        navigateToLoginScreen(context);
         alterDialog(
           context: context,
           title: "회원가입 완료",
           contents: "회원가입이 완료되었습니다.",
         );
       } on Exception catch (e) {
+        Navigator.pop(context);
         alterDialog(context: context, title: "Error", contents: "$e");
       }
     }
-  }
-
-  void _navigateToLoginScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-      (route) => false,
-    );
   }
 
   @override

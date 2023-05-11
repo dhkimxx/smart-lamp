@@ -1,5 +1,4 @@
-import 'package:client/screens/home_screen.dart';
-import 'package:client/screens/join_screen.dart';
+import 'package:client/navigator/screen_navigator.dart';
 import 'package:client/service/api_service.dart';
 import 'package:client/service/login_logout_service.dart';
 import 'package:client/service/prefs_service.dart';
@@ -42,20 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         setIsLoginedPrefs(true);
-        _navigateToHomeScreen();
+        if (!mounted) return;
+        navigateToHomeScreen(context);
       } on Exception catch (e) {
         Navigator.pop(context);
         alterDialog(context: context, title: "오류", contents: "$e");
       }
     }
-  }
-
-  void _navigateToHomeScreen() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-        (route) => false);
   }
 
   @override
@@ -122,11 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const JoinScreen(),
-                        ),
-                      );
+                      navigateToJoinScreen(context);
                     },
                     child: const Text(
                       '회원가입',
