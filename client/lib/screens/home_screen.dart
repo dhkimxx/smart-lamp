@@ -1,7 +1,7 @@
 import 'package:client/button/add_unit_button.dart';
 import 'package:client/models/unit_model.dart';
+import 'package:client/navigator/screen_navigator.dart';
 import 'package:client/screens/add_unit_screen.dart';
-import 'package:client/screens/login_screen.dart';
 import 'package:client/service/login_logout_service.dart';
 import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
@@ -124,17 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({super.key});
 
-  void _navigateToLoginScreen(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-        (route) => false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -152,11 +141,11 @@ class NavigationDrawer extends StatelessWidget {
                 try {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  prefs.clear();
+                  await prefs.clear();
                   await logoutUser();
-                  _navigateToLoginScreen(context);
+                  navigateToLoginScreen(context);
                 } on Exception catch (e) {
-                  _navigateToLoginScreen(context);
+                  navigateToLoginScreen(context);
                   alterDialog(context: context, title: "Error", contents: "$e");
                 }
               },
