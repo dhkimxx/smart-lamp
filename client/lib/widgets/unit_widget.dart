@@ -25,12 +25,12 @@ class Unit extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
+          horizontal: 5,
+          vertical: 0,
         ),
         decoration: BoxDecoration(
           color: Colors.blue,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Container(
           padding: const EdgeInsets.symmetric(

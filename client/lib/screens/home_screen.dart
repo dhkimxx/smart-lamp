@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 vertical: 10,
               ),
               child: Text(
-                "$userName님, 어서오세요.",
+                "$userName님, 안녕하세요.",
                 style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 20,
@@ -139,10 +139,10 @@ class NavigationDrawer extends StatelessWidget {
                 loadingDialog(context: context, text: "로그아웃중...");
 
                 try {
+                  await logoutUser();
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.clear();
-                  await logoutUser();
                   navigateToLoginScreen(context);
                 } on Exception catch (e) {
                   navigateToLoginScreen(context);

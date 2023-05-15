@@ -20,7 +20,7 @@ Future<void> joinUser(String userId, String userPw, String userName) async {
   if (response.statusCode == 201) {
     print("join success ${response.statusCode}");
   } else {
-    print("Failed success ${response.statusCode}");
+    print("Failed to join ${response.statusCode}");
     throw Exception('Failed to join user ${response.statusCode}');
   }
 }

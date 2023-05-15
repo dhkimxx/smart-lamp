@@ -1,5 +1,4 @@
 import 'package:client/navigator/screen_navigator.dart';
-import 'package:client/service/api_service.dart';
 import 'package:client/service/login_logout_service.dart';
 import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
@@ -34,11 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
         final userInfo = await loginUser(userId, userPw);
         await setUserInfoPrefs(userInfo);
 
-        List<String> unitList = await getUnitListPrefs();
-        for (var unitCode in unitList) {
-          String unitInfo = await getUnitInfo(unitCode);
-          await setUnitInfoPrefs(unitCode, unitInfo);
-        }
+        // List<String> unitList = await getUnitListPrefs();
+        // for (var unitCode in unitList) {
+        //   String unitInfo = await getUnitInfo(unitCode);
+        //   await setUnitInfoPrefs(unitCode, unitInfo);
+        // }
 
         setIsLoginedPrefs(true);
         if (!mounted) return;
