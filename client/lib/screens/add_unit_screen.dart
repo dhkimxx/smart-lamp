@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:client/models/unit_model.dart';
 import 'package:client/screens/home_screen.dart';
 import 'package:client/service/api_service.dart';
@@ -16,11 +14,10 @@ class AddUnitScreen extends StatefulWidget {
 
 class _AddUnitScreenState extends State<AddUnitScreen> {
   late Map<String, dynamic> userInfo;
-  late List<String> unitList;
+  late List<String> unitList = [];
 
   Future initPrefs() async {
     userInfo = await getUserPrefs();
-    unitList = await getUnitListPrefs();
     setState(() {});
   }
 
@@ -73,18 +70,12 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
           unitName: unitName,
           distance: defaultDistance,
           time: defaultTime,
+          user: userInfo,
         );
 
         try {
           loadingDialog(context: context, text: "디바이스 정보를 등록하는 중...");
           await postUnitInfo(newUnit);
-          final newUnitList = unitList;
-          final newUserInfo = userInfo;
-          newUnitList.add(unitCode);
-          newUserInfo['unitList'] = newUnitList;
-          await putUserInfo(jsonEncode(newUserInfo));
-          await setUnitInfoPrefs(unitCode, newUnit.toJson());
-          await setUserInfoPrefs(jsonEncode(newUserInfo));
           _navigateToHomeScreen();
         } on Exception catch (e) {
           Navigator.pop(context);

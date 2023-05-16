@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:client/models/unit_model.dart';
 import 'package:client/navigator/screen_navigator.dart';
 import 'package:client/service/api_service.dart';
-import 'package:client/service/prefs_service.dart';
 import 'package:flutter/material.dart';
 
 void alterDialog({
@@ -108,15 +105,12 @@ void unitDeleteAlterDialog({
                 onPressed: () async {
                   try {
                     loadingDialog(context: context, text: "디바이스 삭제중...");
-                    await deleteUnitPrefs(unit.unitCode);
                     await deleteUnitInfo(unit);
-                    final userInfo = jsonEncode(await getUserPrefs());
-                    await putUserInfo(userInfo);
                     navigateToHomeScreen(context);
                   } on Exception catch (e) {
                     navigateToHomeScreen(context);
                     alterDialog(
-                        context: context, title: "Error", contents: "$e");
+                        context: context, title: "error", contents: "$e");
                   }
                 },
               ),

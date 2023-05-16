@@ -26,17 +26,15 @@ Future<String> loginUser(String userId, String userPw) async {
 }
 
 Future<void> logoutUser() async {
-  final userInfo = jsonEncode(await getUserPrefs());
-  print(userInfo);
+  final userInfo = await getUserPrefs();
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.delete(
     Uri.parse('$baseUrl/api/authenticate'),
     headers: {
       'Content-Type': 'application/json',
     },
-    body: userInfo,
+    body: jsonEncode(userInfo),
   );
-
   if (response.statusCode == 200) {
     print("logout success ${response.statusCode}");
   } else {

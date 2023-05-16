@@ -1,6 +1,9 @@
-import 'dart:convert';
+import 'package:client/navigator/screen_navigator.dart';
+import 'package:client/service/api_service.dart';
 import 'package:client/service/mqtt_service.dart';
 import 'package:client/models/unit_model.dart';
+import 'package:client/service/prefs_service.dart';
+import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,17 +21,14 @@ class UnitDetailScreen extends StatefulWidget {
 
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
   late SharedPreferences prefs;
+  late Map<String, dynamic> userInfo;
   int inputDistance = 50; //cm
   int inputTime = 10; //sec
+
   Future initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    final unit = UnitModel.fromJsonMap(
-      jsonDecode(
-        prefs.getString(widget.unit.unitCode)!,
-      ),
-    );
-    inputDistance = unit.distance;
-    inputTime = unit.time;
+    userInfo = await getUserPrefs();
+    inputDistance = widget.unit.distance;
+    inputTime = widget.unit.time;
     setState(() {});
   }
 
@@ -143,21 +143,27 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15), color: Colors.blue),
           child: TextButton(
-            onPressed: () {
-              myMqttClient.pubMessage(
-                topic: "setDistance/${widget.unit.unitCode}",
-                msg: '$inputDistance',
-              );
-              UnitModel newUnit = UnitModel(
-                unitCode: widget.unit.unitCode,
-                unitName: widget.unit.unitName,
-                distance: inputDistance,
-                time: widget.unit.time,
-              );
-              prefs.setString(
-                widget.unit.unitCode,
-                newUnit.toJson(),
-              );
+            onPressed: () async {
+              try {
+                loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
+                myMqttClient.pubMessage(
+                  topic: "setDistance/${widget.unit.unitCode}",
+                  msg: '$inputDistance',
+                );
+                UnitModel newUnit = UnitModel(
+                  unitCode: widget.unit.unitCode,
+                  unitName: widget.unit.unitName,
+                  distance: inputDistance,
+                  time: widget.unit.time,
+                  user: userInfo,
+                );
+                putUnitInfo(newUnit);
+                if (!mounted) return;
+                Navigator.pop(context);
+              } on Exception catch (e) {
+                navigateToHomeScreen(context);
+                alterDialog(context: context, title: 'error', contents: '$e');
+              }
             },
             child: const Text(
               '확인',
@@ -205,21 +211,27 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15), color: Colors.blue),
           child: TextButton(
-            onPressed: () {
-              myMqttClient.pubMessage(
-                topic: "setTime/${widget.unit.unitCode}",
-                msg: '$inputTime',
-              );
-              UnitModel newUnit = UnitModel(
-                unitCode: widget.unit.unitCode,
-                unitName: widget.unit.unitName,
-                distance: widget.unit.distance,
-                time: inputTime,
-              );
-              prefs.setString(
-                widget.unit.unitCode,
-                newUnit.toJson(),
-              );
+            onPressed: () async {
+              try {
+                loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
+                myMqttClient.pubMessage(
+                  topic: "setTime/${widget.unit.unitCode}",
+                  msg: '$inputTime',
+                );
+                UnitModel newUnit = UnitModel(
+                  unitCode: widget.unit.unitCode,
+                  unitName: widget.unit.unitName,
+                  distance: widget.unit.distance,
+                  time: inputTime,
+                  user: userInfo,
+                );
+                await putUnitInfo(newUnit);
+                if (!mounted) return;
+                Navigator.pop(context);
+              } on Exception catch (e) {
+                navigateToHomeScreen(context);
+                alterDialog(context: context, title: 'error', contents: '$e');
+              }
             },
             child: const Text(
               '확인',

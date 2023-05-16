@@ -23,7 +23,6 @@ class _MyAppState extends State<MyApp> {
   Future initPrefs() async {
     isLogined = await getIsLoginedPrefs();
     isInitialized = true;
-    getUnitListPrefs();
     setState(() {});
   }
 
@@ -35,7 +34,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (isInitialized == true) {
+    if (isInitialized) {
       return MaterialApp(
         home: isLogined ? const HomeScreen() : const LoginScreen(),
       );
