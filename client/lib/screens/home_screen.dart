@@ -101,52 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     confirmDismiss: (direction) {
-                      return showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            title: Column(
-                              children: const <Widget>[
-                                Text("디바이스 삭제"),
-                              ],
-                            ),
-                            //
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const <Widget>[
-                                Text(
-                                  "정말 디바이스를 삭제하시겠습니까?",
-                                ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    child: const Text("취소"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop(false);
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: const Text("확인"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop(true);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      return confirmDismissAlterDialog(context, "디바이스 삭제 확인");
                     },
                     background: Container(
                       alignment: Alignment.centerRight,
