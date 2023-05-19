@@ -19,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late bool isInitialized = false;
   List<UnitModel> unitModelList = [];
   late Map<String, dynamic> userInfo = {};
   late String userName = "";
@@ -29,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
       unitModelList = await getUnitModelList();
       userInfo = await getUserPrefs();
       userName = userInfo["userName"].toString();
-      isInitialized = true;
     } on Exception catch (e) {
       alterDialog(context: context, title: 'error', contents: '$e');
     }
@@ -44,22 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isInitialized) {
-      return MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Container(
-              width: 300,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/tukorea.jpg"),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
