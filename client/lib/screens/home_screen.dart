@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       try {
                         loadingDialog(context: context, text: "디바이스 삭제중...");
                         await deleteUnitInfo(unit);
-                        navigateToHomeScreen(context);
+                        if (mounted) Navigator.pop(context);
                       } on Exception catch (e) {
                         navigateToHomeScreen(context);
                         alterDialog(
