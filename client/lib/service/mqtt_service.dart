@@ -6,10 +6,12 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 
 final brokerAddress = dotenv.env['MQTT_BROKER_URL'].toString();
 final brokerPort = int.parse(dotenv.env['MQTT_BROKER_PORT'].toString());
-var pongCount = 0;
 
 class MyMqttClient {
-  final client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
+  final MqttClient client;
+
+  MyMqttClient()
+      : client = MqttServerClient.withPort(brokerAddress, '', brokerPort);
 
   Future<void> connect() async {
     client.logging(on: false);
@@ -18,13 +20,12 @@ class MyMqttClient {
     client.onConnected = onConnected;
     client.onSubscribed = onSubscribed;
     client.pongCallback = pong;
-    final connMess = MqttConnectMessage()
+    client.connectionMessage = MqttConnectMessage()
         .withClientIdentifier('mobileClient')
         .withWillTopic('connected')
         .withWillMessage('mobile client connected')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
-    client.connectionMessage = connMess;
 
     try {
       await client.connect();
@@ -54,7 +55,6 @@ class MyMqttClient {
       client.publishMessage(pubTopic, MqttQos.exactlyOnce, builder.payload!);
       print("Publish $topic $msg ${DateTime.now()}");
       await MqttUtilities.asyncSleep(10);
-      //client.disconnect();
     } else {
       print('ERROR Mosquitto client connection failed - message not published');
     }
@@ -63,13 +63,8 @@ class MyMqttClient {
 
 void onSubscribed(String topic) {}
 
-void onDisconnected() {
-  print("Disconnected!");
-}
+void onDisconnected() {}
 
 void onConnected() {}
 
-void pong() {
-  pongCount++;
-  print(pongCount);
-}
+void pong() {}
