@@ -1,4 +1,3 @@
-import 'package:client/button/add_unit_button.dart';
 import 'package:client/models/unit_model.dart';
 import 'package:client/navigator/screen_navigator.dart';
 import 'package:client/screens/add_unit_screen.dart';
@@ -150,6 +149,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const AddUnitButton()),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AddUnitButton extends StatelessWidget {
+  const AddUnitButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(
+            Icons.add_circle_sharp,
+            size: 70,
+            color: Colors.blue,
+          ),
+        ],
       ),
     );
   }
