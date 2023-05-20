@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
       );
     } else {
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: Center(
             child: Container(
