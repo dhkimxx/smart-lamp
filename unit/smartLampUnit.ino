@@ -3,7 +3,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 // Update these with values suitable for your network.
 
-String clientId = "101";
+String clientId = "100";
 
 const char* ssid = "921-2.4G";
 const char* password = "kpu123456!";
@@ -19,7 +19,7 @@ char *led_state = "OFF";
 int Distance = 50;  // default detection distance 50cm
 int Time = 10000;  // default led on time 10sec (10000msec)
 
-const int LED = 4;
+const int LED = 2;
 const int trig = 16;
 const int echo = 15;
 unsigned long time_previous = 0, time_current = 0;
@@ -33,7 +33,7 @@ bool loop_flag = false;
 void led_on(){
   loop_flag = false;
   digitalWrite(BUILTIN_LED, LOW);
-  digitalWrite(LED, HIGH);
+  digitalWrite(LED, LOW);
   led_state = "ON";
   snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), led_state);
   Serial.print("Publish message /state ");
@@ -44,7 +44,7 @@ void led_on(){
 void led_off(){
   loop_flag = false;
   digitalWrite(BUILTIN_LED, HIGH);
-  digitalWrite(LED, LOW);
+  digitalWrite(LED, HIGH);
   led_state = "OFF";
   snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), led_state);
   Serial.print("Publish message /state ");
