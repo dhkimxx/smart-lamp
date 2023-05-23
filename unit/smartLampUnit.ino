@@ -1,9 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #define _CRT_SECURE_NO_WARNINGS
-// Update these with values suitable for your network.
-
-String clientId = "100";
 
 const char* ssid = "921-2.4G";
 const char* password = "kpu123456!";
@@ -12,56 +9,60 @@ const char* password = "kpu123456!";
 const char* mqtt_server = "13.124.243.209";
 const int port = 58355;
 
+String clientId = "101";
 String topicOrder = clientId;
 String topicSetDistance = "setDistance/" + clientId;
 String topicSetTime = "setTime/" + clientId;
-char *led_state = "OFF";
+String topicSetBrightness = "setBrightness/" + clientId;
+
 int Distance = 50;  // default detection distance 50cm
 int Time = 10000;  // default led on time 10sec (10000msec)
+float Brightness = 3; // Brightness scope: 0~5 stemp, analogWrite: 1023 * (1 - Brightness / 5)
 
 const int LED = 2;
-const int trig = 16;
-const int echo = 15;
-unsigned long time_previous = 0, time_current = 0;
+const int TRIG = 16;
+const int ECHO = 15;
+
+unsigned long loop_time_previous = 0;
+unsigned long check_time_previous = 0;
+unsigned long check_time = 1000;
+
 WiFiClient espClient;
 PubSubClient client(espClient);
 unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE	(50)
 char msg[MSG_BUFFER_SIZE];
-bool loop_flag = false;
+bool delay_flag = false;
+bool check_flag = false;
 
 void led_on(){
-  loop_flag = false;
-  digitalWrite(BUILTIN_LED, LOW);
-  digitalWrite(LED, LOW);
-  led_state = "ON";
-  snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), led_state);
+  digitalWrite(BUILTIN_LED, 1023 * (1 - Brightness / 5));
+  analogWrite(LED, 1023 * (1 - Brightness / 5));
+  snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), "ON");
   Serial.print("Publish message /state ");
   Serial.println(msg);
   client.publish("state", msg);
 }
 
 void led_off(){
-  loop_flag = false;
   digitalWrite(BUILTIN_LED, HIGH);
-  digitalWrite(LED, HIGH);
-  led_state = "OFF";
-  snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), led_state);
+  analogWrite(LED, 1023);
+  snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), "OFF");
   Serial.print("Publish message /state ");
   Serial.println(msg);
   client.publish("state", msg);
 }
 
-int hc_sr04(int target){
+int hc_sr04(int target_distance){
   long duration, distance;
-  digitalWrite(trig, LOW);
+  digitalWrite(TRIG, LOW);
   delayMicroseconds(2);
-  digitalWrite(trig, HIGH);
+  digitalWrite(TRIG, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trig, LOW);
-  duration = pulseIn(echo, HIGH);
+  digitalWrite(TRIG, LOW);
+  duration = pulseIn(ECHO, HIGH);
   distance = duration * 17 / 1000;
-  if(distance <= target){
+  if(distance <= target_distance){
     Serial.print("\nDistance: ");
     Serial.print(distance);
     Serial.println(" cm");
@@ -73,7 +74,6 @@ int hc_sr04(int target){
 
 void setup_wifi() {
   delay(10);
-  // We start by connecting to a WiFi network
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -106,54 +106,59 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println(messageTemp);
 
-  
   if(!strcmp(topic, topicOrder.c_str())){
-    if(messageTemp == "ON"){
-      led_on();
+    if(messageTemp == "ON") led_on();
+    if(messageTemp == "OFF")  led_off();
+  }
+  else if(!strcmp(topic, topicSetDistance.c_str())){
+    Distance = atoi(messageTemp.c_str());
+    Serial.print("set Distance: ");
+    Serial.println(Distance);
+  }
+  else if(!strcmp(topic, topicSetTime.c_str())){
+    Time = 1000 * atoi(messageTemp.c_str());
+    Serial.print("set Time: ");
+    Serial.println(Time);
+  }
+  else if(!strcmp(topic, topicSetBrightness.c_str())){
+    Brightness = atof(messageTemp.c_str());
+    Serial.print("set Brightness: ");
+    Serial.println((int)Brightness);
+    if (delay_flag) analogWrite(LED, 1023 * (1 - Brightness / 5));
+    else{
+      check_flag = true;
+      check_time_previous = millis();
+      analogWrite(LED, 1023 * (1 - Brightness / 5));
     }
-    if(messageTemp == "OFF"){
-      led_off();
-    }
-  }else if(!strcmp(topic, topicSetDistance.c_str())){
-      Distance = atoi(messageTemp.c_str());
-      Serial.print("set Distance: ");
-      Serial.println(Distance);
-  }else if(!strcmp(topic, topicSetTime.c_str())){
-      Time = 1000 * atoi(messageTemp.c_str());
-      Serial.print("set Time: ");
-      Serial.println(Time);
   }
 }
 
 void reconnect() {
-  // Loop until we're reconnected
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
-    // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      // Once connected, publish an announcement...
       client.publish("login", clientId.c_str());
-      // ... and resubscribe
       client.subscribe(topicOrder.c_str());
       client.subscribe(topicSetDistance.c_str());
       client.subscribe(topicSetTime.c_str());
+      client.subscribe(topicSetBrightness.c_str());
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
       delay(500);
     }
   }
 }
 
 void setup() {
+  Serial.begin(115200);
   pinMode(BUILTIN_LED, OUTPUT);
   pinMode(LED, OUTPUT);
-  pinMode(trig, OUTPUT);
-  pinMode(echo, INPUT);
-  Serial.begin(115200);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  
   setup_wifi();
   client.setServer(mqtt_server, port);
   client.setCallback(callback);
@@ -166,12 +171,22 @@ void loop() {
   client.loop();
 
   delay(100);
-  if(hc_sr04(Distance) && !strcmp(led_state,"OFF")){
+  if(!delay_flag && hc_sr04(Distance)){
     led_on();
-    time_previous = millis();
-    loop_flag = true;
+    loop_time_previous = millis();
+    delay_flag = true;
+    check_flag = false;
   }
-  if((millis() - time_previous >= Time) && !strcmp(led_state,"ON") && loop_flag){
+
+  if(delay_flag) Serial.println(millis() - loop_time_previous);
+
+  if(delay_flag && (millis() - loop_time_previous >= Time)){
     led_off();
+    delay_flag = false;
+  }
+
+  if (check_flag && (millis() - check_time_previous >= check_time)){
+    analogWrite(LED, 1023);
+    check_flag = false;
   }
 }
