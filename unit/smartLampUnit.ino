@@ -17,7 +17,7 @@ String topicSetBrightness = "setBrightness/" + clientId;
 
 int Distance = 50;  // default detection distance 50cm
 int Time = 10000;  // default led on time 10sec (10000msec)
-float Brightness = 3; // Brightness scope: 0~5 stemp, analogWrite: 1023 * (1 - Brightness / 5)
+float Brightness = 5; // Brightness scope: 0~10 stemp, analogWrite: 1023 * (1 - Brightness / 10)
 
 const int LED = 2;
 const int TRIG = 16;
@@ -36,8 +36,8 @@ bool delay_flag = false;
 bool check_flag = false;
 
 void led_on(){
-  digitalWrite(BUILTIN_LED, 1023 * (1 - Brightness / 5));
-  analogWrite(LED, 1023 * (1 - Brightness / 5));
+  digitalWrite(BUILTIN_LED, 1023 * (1 - Brightness / 10));
+  analogWrite(LED, 1023 * (1 - Brightness / 10));
   snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), "ON");
   Serial.print("Publish message /state ");
   Serial.println(msg);
@@ -124,11 +124,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Brightness = atof(messageTemp.c_str());
     Serial.print("set Brightness: ");
     Serial.println((int)Brightness);
-    if (delay_flag) analogWrite(LED, 1023 * (1 - Brightness / 5));
+    if (delay_flag) analogWrite(LED, 1023 * (1 - Brightness / 10));
     else{
       check_flag = true;
       check_time_previous = millis();
-      analogWrite(LED, 1023 * (1 - Brightness / 5));
+      analogWrite(LED, 1023 * (1 - Brightness / 10));
     }
   }
 }
@@ -165,6 +165,7 @@ void setup() {
 }
 
 void loop() {
+  delay(10);
   if (!client.connected()) {
     reconnect();
   }
@@ -184,7 +185,7 @@ void loop() {
     led_off();
     delay_flag = false;
   }
-
+  
   if (check_flag && (millis() - check_time_previous >= check_time)){
     analogWrite(LED, 1023);
     check_flag = false;
