@@ -19,7 +19,13 @@ class UnitDetailScreen extends StatefulWidget {
   State<UnitDetailScreen> createState() => _UnitDetailScreenState();
 }
 
+class SliderController {
+  double sliderValue;
+  SliderController(this.sliderValue);
+}
+
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
+  SliderController sliderController = SliderController(5);
   late SharedPreferences prefs;
   late Map<String, dynamic> userInfo;
   int inputDistance = 50; //cm
@@ -97,7 +103,36 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
             ],
           ),
           const SizedBox(
-            height: 15,
+            height: 50,
+          ),
+          const Text(
+            '밝기 조절',
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(
+            width: 350,
+            child: Slider(
+              value: sliderController.sliderValue,
+              min: 0.0,
+              max: 10.0,
+              divisions: 10,
+              label: '${sliderController.sliderValue.round()}',
+              onChanged: (double newValue) {
+                sliderController.sliderValue = newValue;
+                myMqttClient.pubMessage(
+                  topic: 'setBrightness/${widget.unit.unitCode}',
+                  msg: '$newValue',
+                );
+                setState(() {});
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 50,
           ),
           editDistance(myMqttClient),
           const SizedBox(
@@ -117,7 +152,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
           ' 감지 거리(cm):  ',
           style: TextStyle(
             color: Colors.blue,
-            fontSize: 18,
+            fontSize: 20,
           ),
         ),
         const SizedBox(
@@ -185,7 +220,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
           '점등 지속시간(초):',
           style: TextStyle(
             color: Colors.blue,
-            fontSize: 18,
+            fontSize: 20,
           ),
         ),
         const SizedBox(
