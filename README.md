@@ -1,8 +1,15 @@
 # Smart Lamp
 > TUKOREA Capstone Design Project
 
+## Architecture
+
+<p align="center">
+  <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/95d699e5-c1e7-457a-8eb5-ffe34be5769e" height="600">
+</p> 
+
 
 ## Environment
+
 <div>
   <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
   <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
@@ -11,7 +18,9 @@
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 </div>
 
+
 ## Built With 
+
 <div>
   <img src="https://img.shields.io/badge/arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white">
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
