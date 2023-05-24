@@ -7,6 +7,10 @@
 
 ## 아키텍쳐
 
+- [백엔드 서버](https://github.com/dhkimxx/smartLampServer)  
+- [모바일 앱]()
+- [Wemos D1 mini(아두이노)]()
+
 <p align="center">
   <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/95d699e5-c1e7-457a-8eb5-ffe34be5769e" height="600">
 </p> 
@@ -24,12 +28,14 @@
 </div>
 
 
-## 기술 스택
+## 사용 기술
 
 <div>
+
   <img src="https://img.shields.io/badge/arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white">
   <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/mqtt-660066?style=for-the-badge&logo=mqtt&logoColor=white">
   <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
   <img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
-  <img src="https://img.shields.io/badge/mqtt-660066?style=for-the-badge&logo=mqtt&logoColor=white">
+  
 </div>
