@@ -1,25 +1,30 @@
 # Smart Lamp
 > TUKOREA Capstone Design Project
 
-## Architecture
+## 프로젝트 소개
+
+## 주요 기능 및 화면 구성
+
+## 아키텍쳐
 
 <p align="center">
   <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/95d699e5-c1e7-457a-8eb5-ffe34be5769e" height="600">
 </p> 
 
 
-## Environment
+## 개발 환경
 
 <div>
   <img src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white">
   <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
   <img src="https://img.shields.io/badge/xcode-147EFB?style=for-the-badge&logo=xcode&logoColor=white">
+  <img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 </div>
 
 
-## Built With 
+## 기술 스택
 
 <div>
   <img src="https://img.shields.io/badge/arduino-00979D?style=for-the-badge&logo=arduino&logoColor=white">
