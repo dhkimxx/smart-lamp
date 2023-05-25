@@ -61,34 +61,65 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: _userIdController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '사용자 아이디를 입력하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '아이디',
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userIdController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '사용자 아이디를 입력하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '아이디',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: _userPwController,
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '사용자 비밀번호를 입력하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '비밀번호',
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userPwController,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '사용자 비밀번호를 입력하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '비밀번호',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

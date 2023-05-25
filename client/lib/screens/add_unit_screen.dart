@@ -108,61 +108,88 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: '디바이스 고유 코드',
+            SizedBox(
+              width: 350,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    onChanged: (value) {
-                      inputUnitCode = value;
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: '디바이스 이름 설정',
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                        border: InputBorder.none,
+                        labelText: '디바이스 고유 코드',
+                        labelStyle: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        inputUnitCode = value;
+                      },
                     ),
-                    onChanged: (value) {
-                      inputUnitName = value;
-                    },
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(15),
+                  const SizedBox(
+                    height: 20,
                   ),
-                  child: TextButton(
-                    onPressed: () {
-                      createDevice(
-                        unitCode: inputUnitCode,
-                        unitName: inputUnitName,
-                      );
-                    },
-                    child: const Text(
-                      '디바이스 생성',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                        border: InputBorder.none,
+                        labelText: '디바이스 이름 설정',
+                        labelStyle: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        inputUnitName = value;
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        createDevice(
+                          unitCode: inputUnitCode,
+                          unitName: inputUnitName,
+                        );
+                      },
+                      child: const Text(
+                        '디바이스 생성',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 50,
-                )
-              ],
+                  const SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
             ),
           ],
         ),

@@ -71,62 +71,127 @@ class _JoinScreenState extends State<JoinScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: _userIdController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '사용자 아이디를 입력하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '아이디',
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userIdController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '사용자 아이디를 입력하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '아이디',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: _userNameController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '사용자 이름을 입력하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '이름',
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userNameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '사용자 이름을 입력하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '이름',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: _userPwController,
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '사용자 비밀번호를 입력하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '비밀번호',
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userPwController,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '사용자 비밀번호를 입력하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '비밀번호',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              TextFormField(
-                controller: _userPwCheckController,
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '다시 한번 사용자 비밀번호를 입력하세요.';
-                  } else if (_userPwController.text !=
-                      _userPwCheckController.text) {
-                    return '비밀번호가 일치한지 확인하세요.';
-                  }
-                  return null;
-                },
-                decoration: const InputDecoration(
-                  hintText: '비밀번호 확인',
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  controller: _userPwCheckController,
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '다시 한번 사용자 비밀번호를 입력하세요.';
+                    } else if (_userPwController.text !=
+                        _userPwCheckController.text) {
+                      return '비밀번호가 일치한지 확인하세요.';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    border: InputBorder.none,
+                    labelText: '비밀번호 확인',
+                    labelStyle: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
                   onPressed: _join,
