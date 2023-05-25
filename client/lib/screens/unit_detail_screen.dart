@@ -5,6 +5,7 @@ import 'package:client/models/unit_model.dart';
 import 'package:client/service/prefs_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UnitDetailScreen extends StatefulWidget {
@@ -25,13 +26,16 @@ class SliderController {
 }
 
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
-  SliderController sliderController = SliderController(5);
+  MyMqttClient myMqttClient = MyMqttClient();
+
   late SharedPreferences prefs;
   late Map<String, dynamic> userInfo;
   int inputDistance = 50; //cm
   int inputTime = 10; //sec
   int inputBrightness = 5;
+
   Future initPrefs() async {
+    myMqttClient.connect();
     userInfo = await getUserPrefs();
     inputDistance = widget.unit.distance;
     inputTime = widget.unit.time;
@@ -47,8 +51,8 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var myMqttClient = MyMqttClient();
-    myMqttClient.connect();
+    SliderController sliderController =
+        SliderController(inputBrightness.toDouble());
 
     return Scaffold(
       appBar: AppBar(
@@ -64,8 +68,19 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
+            '디바이스 코드: ${widget.unit.unitCode}',
+            style: const TextStyle(
+              color: Colors.blue,
+            ),
+          ),
+          const SizedBox(
+            height: 150,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -74,10 +89,9 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                   horizontal: 20,
                 ),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.blue,
-                    )),
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(20),
+                ),
                 child: Row(
                   children: [
                     TextButton(
@@ -104,182 +118,201 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
             ],
           ),
           const SizedBox(
-            height: 50,
+            height: 25,
           ),
-          const Text(
-            '밝기 조절',
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue[100],
+              borderRadius: BorderRadius.circular(40),
+            ),
+            child: Column(
+              children: [
+                const Text(
+                  '밝기 조절',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(
+                  width: 300,
+                  child: Slider(
+                    value: sliderController.sliderValue,
+                    min: 0.0,
+                    max: 10.0,
+                    divisions: 10,
+                    label: '${sliderController.sliderValue.round()}',
+                    onChanged: (double value) {
+                      sliderController.sliderValue = value;
+                      inputBrightness = value.toInt();
+                      myMqttClient.publishMessage(
+                        topic: 'setBrightness/${widget.unit.unitCode}',
+                        msg: '$inputBrightness',
+                      );
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
-          SizedBox(
-            width: 350,
-            child: Slider(
-              value: sliderController.sliderValue,
-              min: 0.0,
-              max: 10.0,
-              divisions: 10,
-              label: '${sliderController.sliderValue.round()}',
-              onChanged: (double newValue) {
-                sliderController.sliderValue = newValue;
-                myMqttClient.publishMessage(
-                  topic: 'setBrightness/${widget.unit.unitCode}',
-                  msg: '$newValue',
-                );
-                setState(() {});
+          const SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 20,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      ' 감지 거리(cm):  ',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      '$inputDistance',
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            onTap: () {
+              showMaterialNumberPicker(
+                maxLongSide: 400,
+                title: '감지 거리',
+                context: context,
+                minNumber: 1,
+                maxNumber: 100,
+                selectedNumber: inputDistance,
+                onChanged: (value) => setState(() {
+                  inputDistance = value;
+                  myMqttClient.publishMessage(
+                    topic: 'setDistance/${widget.unit.unitCode}',
+                    msg: '$inputDistance',
+                  );
+                }),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 20,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.blue[100],
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: SizedBox(
+                width: 300,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      '점등 지속시간(초):  ',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      '$inputTime',
+                      style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            onTap: () {
+              showMaterialNumberPicker(
+                maxLongSide: 400,
+                title: '점등 지속시간',
+                context: context,
+                minNumber: 1,
+                maxNumber: 100,
+                selectedNumber: inputTime,
+                onChanged: (value) => setState(() {
+                  inputTime = value;
+                  myMqttClient.publishMessage(
+                    topic: "setTime/${widget.unit.unitCode}",
+                    msg: '$inputTime',
+                  );
+                }),
+              );
+            },
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Container(
+            width: 80,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: TextButton(
+              child: const Text(
+                '저장',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () async {
+                try {
+                  loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
+                  UnitModel newUnit = UnitModel(
+                    unitCode: widget.unit.unitCode,
+                    unitName: widget.unit.unitName,
+                    distance: inputDistance,
+                    time: inputTime,
+                    brightness: inputBrightness,
+                    user: userInfo,
+                  );
+                  print(newUnit.toJson());
+                  putUnitInfo(newUnit);
+                  if (!mounted) return;
+                  Navigator.pop(context);
+                } on Exception catch (e) {
+                  navigateToHomeScreen(context);
+                  alterDialog(context: context, title: 'error', contents: '$e');
+                }
               },
             ),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          editDistance(myMqttClient),
-          const SizedBox(
-            height: 10,
-          ),
-          editTime(myMqttClient),
+          )
         ],
       ),
-    );
-  }
-
-  Row editDistance(MyMqttClient myMqttClient) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          ' 감지 거리(cm):  ',
-          style: TextStyle(
-            color: Colors.blue,
-            fontSize: 20,
-          ),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        SizedBox(
-          width: 50,
-          height: 48,
-          child: TextFormField(
-            key: Key('$inputDistance'),
-            autofocus: false,
-            initialValue: '$inputDistance',
-            textAlign: TextAlign.center,
-            onChanged: (value) {
-              if (value != '') inputDistance = int.parse(value);
-            },
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.blue),
-          child: TextButton(
-            onPressed: () async {
-              try {
-                loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
-                myMqttClient.publishMessage(
-                  topic: "setDistance/${widget.unit.unitCode}",
-                  msg: '$inputDistance',
-                );
-                UnitModel newUnit = UnitModel(
-                  unitCode: widget.unit.unitCode,
-                  unitName: widget.unit.unitName,
-                  distance: inputDistance,
-                  time: widget.unit.time,
-                  brightness: inputBrightness,
-                  user: userInfo,
-                );
-                putUnitInfo(newUnit);
-                if (!mounted) return;
-                Navigator.pop(context);
-              } on Exception catch (e) {
-                navigateToHomeScreen(context);
-                alterDialog(context: context, title: 'error', contents: '$e');
-              }
-            },
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row editTime(MyMqttClient myMqttClient) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          '점등 지속시간(초):',
-          style: TextStyle(
-            color: Colors.blue,
-            fontSize: 20,
-          ),
-        ),
-        const SizedBox(
-          width: 5,
-        ),
-        SizedBox(
-          width: 50,
-          height: 48,
-          child: TextFormField(
-            key: Key('$inputTime'),
-            autofocus: false,
-            initialValue: '$inputTime',
-            textAlign: TextAlign.center,
-            onChanged: (value) {
-              if (value != '') inputTime = int.parse(value);
-            },
-          ),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15), color: Colors.blue),
-          child: TextButton(
-            onPressed: () async {
-              try {
-                loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
-                myMqttClient.publishMessage(
-                  topic: "setTime/${widget.unit.unitCode}",
-                  msg: '$inputTime',
-                );
-                UnitModel newUnit = UnitModel(
-                  unitCode: widget.unit.unitCode,
-                  unitName: widget.unit.unitName,
-                  distance: widget.unit.distance,
-                  time: inputTime,
-                  brightness: inputBrightness,
-                  user: userInfo,
-                );
-                await putUnitInfo(newUnit);
-                if (!mounted) return;
-                Navigator.pop(context);
-              } on Exception catch (e) {
-                navigateToHomeScreen(context);
-                alterDialog(context: context, title: 'error', contents: '$e');
-              }
-            },
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
