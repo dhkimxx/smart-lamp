@@ -27,6 +27,44 @@ Future<void> joinUser(String userId, String userPw, String userName) async {
   }
 }
 
+Future<String> loginUser(String userId, String userPw) async {
+  final baseUrl = dotenv.env['BASE_URL'];
+  final response = await http.post(
+    Uri.parse('$baseUrl/api/authenticate'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode({
+      'userId': userId,
+      'userPw': userPw,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    print("login success ${response.statusCode}");
+    return utf8.decode(response.bodyBytes);
+  } else {
+    throw Exception('Failed to login user ${response.statusCode}');
+  }
+}
+
+Future<void> logoutUser() async {
+  final userInfo = await getUserPrefs();
+  final baseUrl = dotenv.env['BASE_URL'];
+  final response = await http.delete(
+    Uri.parse('$baseUrl/api/authenticate'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(userInfo),
+  );
+  if (response.statusCode == 200) {
+    print("logout success ${response.statusCode}");
+  } else {
+    throw Exception('Failed to logout user ${response.statusCode}');
+  }
+}
+
 Future<List<UnitModel>> getUnitModelList() async {
   final userInfo = await getUserPrefs();
   userInfo['unitList'] = [];
