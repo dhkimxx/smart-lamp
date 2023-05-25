@@ -1,5 +1,5 @@
 import 'package:client/navigator/screen_navigator.dart';
-import 'package:client/service/join_service.dart';
+import 'package:client/service/api_service.dart';
 import 'package:client/widgets/dialog_widget.dart';
 import 'package:flutter/material.dart';
 
