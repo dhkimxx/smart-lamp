@@ -47,7 +47,8 @@ class MyMqttClient {
     }
   }
 
-  Future<void> pubMessage({required String topic, required String msg}) async {
+  Future<void> publishMessage(
+      {required String topic, required String msg}) async {
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
       var pubTopic = topic;
       final builder = MqttClientPayloadBuilder();
@@ -59,12 +60,12 @@ class MyMqttClient {
       print('ERROR Mosquitto client connection failed - message not published');
     }
   }
+
+  void onSubscribed(String topic) {}
+
+  void onDisconnected() {}
+
+  void onConnected() {}
+
+  void pong() {}
 }
-
-void onSubscribed(String topic) {}
-
-void onDisconnected() {}
-
-void onConnected() {}
-
-void pong() {}

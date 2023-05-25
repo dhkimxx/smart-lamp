@@ -30,11 +30,12 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   late Map<String, dynamic> userInfo;
   int inputDistance = 50; //cm
   int inputTime = 10; //sec
-
+  int inputBrightness = 5;
   Future initPrefs() async {
     userInfo = await getUserPrefs();
     inputDistance = widget.unit.distance;
     inputTime = widget.unit.time;
+    inputBrightness = widget.unit.brightness;
     setState(() {});
   }
 
@@ -81,7 +82,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        myMqttClient.pubMessage(
+                        myMqttClient.publishMessage(
                           topic: widget.unit.unitCode,
                           msg: 'ON',
                         );
@@ -90,7 +91,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        myMqttClient.pubMessage(
+                        myMqttClient.publishMessage(
                           topic: widget.unit.unitCode,
                           msg: 'OFF',
                         );
@@ -123,7 +124,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
               label: '${sliderController.sliderValue.round()}',
               onChanged: (double newValue) {
                 sliderController.sliderValue = newValue;
-                myMqttClient.pubMessage(
+                myMqttClient.publishMessage(
                   topic: 'setBrightness/${widget.unit.unitCode}',
                   msg: '$newValue',
                 );
@@ -181,7 +182,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
             onPressed: () async {
               try {
                 loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
-                myMqttClient.pubMessage(
+                myMqttClient.publishMessage(
                   topic: "setDistance/${widget.unit.unitCode}",
                   msg: '$inputDistance',
                 );
@@ -190,6 +191,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                   unitName: widget.unit.unitName,
                   distance: inputDistance,
                   time: widget.unit.time,
+                  brightness: inputBrightness,
                   user: userInfo,
                 );
                 putUnitInfo(newUnit);
@@ -249,7 +251,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
             onPressed: () async {
               try {
                 loadingDialog(context: context, text: '디바이스 정보를 수정하는중...');
-                myMqttClient.pubMessage(
+                myMqttClient.publishMessage(
                   topic: "setTime/${widget.unit.unitCode}",
                   msg: '$inputTime',
                 );
@@ -258,6 +260,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                   unitName: widget.unit.unitName,
                   distance: widget.unit.distance,
                   time: inputTime,
+                  brightness: inputBrightness,
                   user: userInfo,
                 );
                 await putUnitInfo(newUnit);

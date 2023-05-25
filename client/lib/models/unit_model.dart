@@ -5,6 +5,7 @@ class UnitModel {
   final String unitName;
   final int distance;
   final int time;
+  final int brightness;
   final Map<String, dynamic> user;
 
   UnitModel({
@@ -12,6 +13,7 @@ class UnitModel {
     required this.unitName,
     required this.distance,
     required this.time,
+    required this.brightness,
     required this.user,
   });
 
@@ -20,6 +22,7 @@ class UnitModel {
         unitName = json['unitName'].toString(),
         distance = json['distance'],
         time = json['time'],
+        brightness = json['brightness'],
         user = json['user'];
 
   String toJson() {
@@ -28,6 +31,7 @@ class UnitModel {
       'unitName': unitName,
       'distance': distance,
       'time': time,
+      'brightness': brightness,
       'user': user,
     };
     return jsonEncode(unitInfoJson);

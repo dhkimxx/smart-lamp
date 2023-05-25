@@ -41,6 +41,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
     String? inputUnitName;
     int defaultDistance = 50; //cm
     int defaultTime = 10; //sec
+    int defaultBrightness = 5; // 0~10 steps
 
     createDevice({required String? unitCode, required String? unitName}) async {
       if (unitCode == null || unitCode == '') {
@@ -70,6 +71,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
           unitName: unitName,
           distance: defaultDistance,
           time: defaultTime,
+          brightness: defaultBrightness,
           user: userInfo,
         );
 
