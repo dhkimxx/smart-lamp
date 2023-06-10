@@ -51,7 +51,7 @@ Future<String> loginUser(String userId, String userPw) async {
 Future<void> logoutUser() async {
   final userInfo = await getUserPrefs();
   final baseUrl = dotenv.env['BASE_URL'];
-  final response = await http.delete(
+  final response = await http.patch(
     Uri.parse('$baseUrl/api/user/authenticate'),
     headers: {
       'Content-Type': 'application/json',
