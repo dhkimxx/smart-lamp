@@ -30,7 +30,7 @@ Future<void> joinUser(String userId, String userPw, String userName) async {
 Future<String> loginUser(String userId, String userPw) async {
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.post(
-    Uri.parse('$baseUrl/api/authenticate'),
+    Uri.parse('$baseUrl/api/user/authenticate'),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -52,7 +52,7 @@ Future<void> logoutUser() async {
   final userInfo = await getUserPrefs();
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.delete(
-    Uri.parse('$baseUrl/api/authenticate'),
+    Uri.parse('$baseUrl/api/user/authenticate'),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -70,7 +70,7 @@ Future<List<UnitModel>> getUnitModelList() async {
 
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.post(
-    Uri.parse('$baseUrl/api/unitList'),
+    Uri.parse('$baseUrl/api/unit/unitList'),
     headers: {
       'Content-Type': 'application/json',
     },
