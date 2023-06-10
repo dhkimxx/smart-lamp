@@ -109,7 +109,7 @@ Future<void> postUnitInfo(UnitModel unit) async {
   }
 }
 
-Future<void> putUnitInfo(UnitModel unit) async {
+Future<void> patchUnitInfo(UnitModel unit) async {
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.put(Uri.parse('$baseUrl/api/unit'),
       headers: {

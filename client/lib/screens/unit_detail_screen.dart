@@ -301,7 +301,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     userId: userInfo['userId'],
                   );
                   print(newUnit.toJson());
-                  putUnitInfo(newUnit);
+                  patchUnitInfo(newUnit);
                   if (!mounted) return;
                   navigateToHomeScreen(context);
                 } on Exception catch (e) {
