@@ -111,7 +111,7 @@ Future<void> postUnitInfo(UnitModel unit) async {
 
 Future<void> patchUnitInfo(UnitModel unit) async {
   final baseUrl = dotenv.env['BASE_URL'];
-  final response = await http.put(Uri.parse('$baseUrl/api/unit'),
+  final response = await http.patch(Uri.parse('$baseUrl/api/unit'),
       headers: {
         'Content-Type': 'application/json',
       },
