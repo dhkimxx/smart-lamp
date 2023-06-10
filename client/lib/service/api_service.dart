@@ -135,7 +135,7 @@ Future<void> deleteUnitInfo(UnitModel unit) async {
     body: unit.toJson(),
   );
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 204) {
     print("Succeeded to delete unit ${response.statusCode}");
   } else {
     print("Failed to delete unit ${response.statusCode}");
