@@ -67,11 +67,10 @@ Future<void> logoutUser() async {
 
 Future<List<UnitModel>> getUnitModelList() async {
   final userInfo = await getUserPrefs();
-  userInfo['unitList'] = [];
 
   final baseUrl = dotenv.env['BASE_URL'];
   final response = await http.post(
-    Uri.parse('$baseUrl/api/authenticate'),
+    Uri.parse('$baseUrl/api/unitList'),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -79,11 +78,9 @@ Future<List<UnitModel>> getUnitModelList() async {
   );
 
   if (response.statusCode == 200) {
-    Map<String, dynamic> responseUserInfo =
-        jsonDecode(utf8.decode(response.bodyBytes));
+    List responseUserInfo = jsonDecode(utf8.decode(response.bodyBytes));
     List<UnitModel> unitModelList = [];
-    for (var responseUnitInfo in responseUserInfo['unitList']) {
-      responseUnitInfo['user'] = userInfo;
+    for (var responseUnitInfo in responseUserInfo) {
       UnitModel unitModel = UnitModel.fromJsonMap(responseUnitInfo);
       unitModelList.add(unitModel);
     }
@@ -96,12 +93,13 @@ Future<List<UnitModel>> getUnitModelList() async {
 
 Future<void> postUnitInfo(UnitModel unit) async {
   final baseUrl = dotenv.env['BASE_URL'];
-  final response = await http.post(Uri.parse('$baseUrl/api/unit'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: unit.toJson() //unit.toJson(),
-      );
+  final response = await http.post(
+    Uri.parse('$baseUrl/api/unit'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: unit.toJson(),
+  );
 
   if (response.statusCode == 201) {
     print("Succeeded to post unit ${response.statusCode}");
@@ -117,8 +115,7 @@ Future<void> putUnitInfo(UnitModel unit) async {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: unit.toJson() //unit.toJson(),
-      );
+      body: unit.toJson());
 
   if (response.statusCode == 201) {
     print("Succeeded to put unit ${response.statusCode}");

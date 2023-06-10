@@ -298,12 +298,12 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                     distance: inputDistance,
                     time: inputTime,
                     brightness: inputBrightness,
-                    user: userInfo,
+                    userId: userInfo['userId'],
                   );
                   print(newUnit.toJson());
                   putUnitInfo(newUnit);
                   if (!mounted) return;
-                  Navigator.pop(context);
+                  navigateToHomeScreen(context);
                 } on Exception catch (e) {
                   navigateToHomeScreen(context);
                   alterDialog(context: context, title: 'error', contents: '$e');

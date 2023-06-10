@@ -33,7 +33,6 @@ Future<void> setUserInfoPrefs(String userInfo) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   Map<String, dynamic> userInfoMap = jsonDecode(userInfo);
-  userInfoMap['unitList'] = [];
   userInfo = jsonEncode(userInfoMap);
   await prefs.setString("userInfo", userInfo);
 }

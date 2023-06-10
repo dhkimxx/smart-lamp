@@ -72,7 +72,7 @@ class _AddUnitScreenState extends State<AddUnitScreen> {
           distance: defaultDistance,
           time: defaultTime,
           brightness: defaultBrightness,
-          user: userInfo,
+          userId: userInfo['userId'],
         );
 
         try {
