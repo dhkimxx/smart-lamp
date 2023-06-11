@@ -33,8 +33,7 @@
     <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea" style="width: 200px;">
 </div>
 
-
- 로그인 화면 | 메인 화면 | 디바이스 추가 화면 | 디바이스 제어 화면
+로그인 화면 | 메인 화면 | 디바이스 추가 화면 | 디바이스 제어 화면
 
 
 
