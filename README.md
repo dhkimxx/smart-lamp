@@ -25,25 +25,41 @@
 • 노인 인구가 전 세계적으로 증가하는 추세에 따라 이와 같은노인들을 위한 안전사고 예방 솔루션의 시장 수요가 증가할 것으로 예상된다.  
 
 ## 주요 기능 및 화면 구성
-  
+
+<style>
+    .image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-right: 10px;
+    }
+
+    .image-container img {
+        width: 200px;
+        margin-bottom: 10px;
+    }
+</style>
+
 <div style="display: flex;">
-    <figure style="margin-right: 10px;">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62" style="width: 200px;">
-        <figcaption>로그인 화면</figcaption>
-    </figure>
-    <figure style="margin-right: 10px;">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f" style="width: 200px;">
-        <figcaption>메인 화면</figcaption>
-    </figure>
-    <figure style="margin-right: 10px;">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa" style="width: 200px;">
-        <figcaption>디바이스 추가 화면</figcaption>
-    </figure>
-    <figure>
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea" style="width: 200px;">
-        <figcaption>디바이스 제어 화면</figcaption>
-    </figure>
+    <div class="image-container">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62">
+        <span>로그인 화면</span>
+    </div>
+    <div class="image-container">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f">
+        <span>메인 화면</span>
+    </div>
+    <div class="image-container">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa">
+        <span>디바이스 추가 화면</span>
+    </div>
+    <div class="image-container">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea">
+        <span>디바이스 제어 화면</span>
+    </div>
 </div>
+
 
 ## 아키텍쳐
 
