@@ -28,7 +28,7 @@
 
 
 <div style="display: flex;">
-    
+    <div>
         <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62" width=200>
         <span>로그인 화면</span>
     </div>
