@@ -26,36 +26,22 @@
 
 ## 주요 기능 및 화면 구성
 
-<style>
-    .image-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-right: 10px;
-    }
-
-    .image-container img {
-        width: 200px;
-        margin-bottom: 10px;
-    }
-</style>
 
 <div style="display: flex;">
-    <div class="image-container">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62">
+    
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62" width=200>
         <span>로그인 화면</span>
     </div>
     <div class="image-container">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f" width=200>
         <span>메인 화면</span>
     </div>
     <div class="image-container">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa" width=200>
         <span>디바이스 추가 화면</span>
     </div>
     <div class="image-container">
-        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea">
+        <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea" width=200>
         <span>디바이스 제어 화면</span>
     </div>
 </div>
