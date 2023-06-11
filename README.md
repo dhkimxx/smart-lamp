@@ -25,11 +25,14 @@
 • 노인 인구가 전 세계적으로 증가하는 추세에 따라 이와 같은노인들을 위한 안전사고 예방 솔루션의 시장 수요가 증가할 것으로 예상된다.  
 
 ## 주요 기능 및 화면 구성
+  
+<div style="display: flex;">
+    <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62" style="margin-right: 10px;">
+    <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f" style="margin-right: 10px;">
+    <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa" style="margin-right: 10px;">
+    <img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea">
+</div>
 
-<img src="https://github.com/dhkimxx/smartLamp/assets/79616878/dd11ff2d-a712-4d9e-b155-275124beab62" style="display:inline-block; margin-right: 10px;">
-<img src="https://github.com/dhkimxx/smartLamp/assets/79616878/853f9d74-2f21-4cd6-a813-a18cffa5ca7f" style="display:inline-block; margin-right: 10px;">
-<img src="https://github.com/dhkimxx/smartLamp/assets/79616878/114c04c3-33e8-4f6c-a10d-cf79864b4aaa" style="display:inline-block; margin-right: 10px;">
-<img src="https://github.com/dhkimxx/smartLamp/assets/79616878/509dd21b-ce97-4ba6-93ee-c470b6182dea" style="display:inline-block;">
 
 
 
