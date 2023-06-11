@@ -17,7 +17,7 @@ class Unit extends StatelessWidget {
         vertical: 0,
       ),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Colors.purple[300],
         borderRadius: BorderRadius.circular(5),
       ),
       child: Container(

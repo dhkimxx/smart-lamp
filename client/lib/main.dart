@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
               width: 300,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/tukorea.jpg"),
+                  image: AssetImage("assets/images/child.jpg"),
                 ),
               ),
             ),
