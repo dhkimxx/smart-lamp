@@ -51,178 +51,185 @@ class _JoinScreenState extends State<JoinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          '회원가입',
-          style: TextStyle(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text(
+            '회원가입',
+            style: TextStyle(
+              color: Colors.purple.shade100,
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: BackButton(
             color: Colors.purple.shade100,
-            fontSize: 25,
-            fontWeight: FontWeight.w600,
           ),
         ),
-        leading: BackButton(
-          color: Colors.purple.shade100,
+        body: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/child.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _userIdController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '사용자 아이디를 입력하세요.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                          border: InputBorder.none,
+                          labelText: '아이디',
+                          labelStyle: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _userNameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '사용자 이름을 입력하세요.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                          border: InputBorder.none,
+                          labelText: '이름',
+                          labelStyle: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _userPwController,
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '사용자 비밀번호를 입력하세요.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                          border: InputBorder.none,
+                          labelText: '비밀번호',
+                          labelStyle: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _userPwCheckController,
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '다시 한번 사용자 비밀번호를 입력하세요.';
+                          } else if (_userPwController.text !=
+                              _userPwCheckController.text) {
+                            return '비밀번호가 일치한지 확인하세요.';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                          border: InputBorder.none,
+                          labelText: '비밀번호 확인',
+                          labelStyle: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _join,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple, // 버튼의 배경색을 주황색으로 설정
+                        ),
+                        child: const Text(
+                          '회원가입',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 100),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/child.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.purple[100],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      controller: _userIdController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '사용자 아이디를 입력하세요.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        border: InputBorder.none,
-                        labelText: '아이디',
-                        labelStyle: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.purple[100],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      controller: _userNameController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '사용자 이름을 입력하세요.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        border: InputBorder.none,
-                        labelText: '이름',
-                        labelStyle: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.purple[100],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      controller: _userPwController,
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '사용자 비밀번호를 입력하세요.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        border: InputBorder.none,
-                        labelText: '비밀번호',
-                        labelStyle: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.purple[100],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextFormField(
-                      textAlign: TextAlign.center,
-                      controller: _userPwCheckController,
-                      obscureText: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '다시 한번 사용자 비밀번호를 입력하세요.';
-                        } else if (_userPwController.text !=
-                            _userPwCheckController.text) {
-                          return '비밀번호가 일치한지 확인하세요.';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        border: InputBorder.none,
-                        labelText: '비밀번호 확인',
-                        labelStyle: TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _join,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple, // 버튼의 배경색을 주황색으로 설정
-                      ),
-                      child: const Text(
-                        '회원가입',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
