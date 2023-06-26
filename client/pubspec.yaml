@@ -32,7 +32,6 @@ flutter:
 
   assets:
   - assets/config/.env
-  - assets/images/tukorea.jpg
   - assets/images/child.jpg
   - assets/images/sky.png
  
