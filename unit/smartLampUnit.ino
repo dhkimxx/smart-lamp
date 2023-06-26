@@ -9,7 +9,7 @@ const char* password = "kpu123456!";
 const char* mqtt_server = "13.124.243.209";
 const int port = 58355;
 
-String clientId = "101";
+String clientId = "100";
 String topicOrder = clientId;
 String topicSetDistance = "setDistance/" + clientId;
 String topicSetTime = "setTime/" + clientId;
@@ -39,16 +39,16 @@ void led_on(){
   digitalWrite(BUILTIN_LED, 1023 * (1 - Brightness / 10));
   analogWrite(LED, 1023 * (1 - Brightness / 10));
   snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), "ON");
-  Serial.print("Publish message /state ");
+  Serial.print("Publish message /status ");
   Serial.println(msg);
-  client.publish("state", msg);
+  client.publish("status", msg);
 }
 
 void led_off(){
   digitalWrite(BUILTIN_LED, HIGH);
   analogWrite(LED, 1023);
   snprintf (msg, MSG_BUFFER_SIZE, "%s-%s", clientId.c_str(), "OFF");
-  Serial.print("Publish message /state ");
+  Serial.print("Publish message /status ");
   Serial.println(msg);
   client.publish("state", msg);
 }
@@ -109,6 +109,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if(!strcmp(topic, topicOrder.c_str())){
     if(messageTemp == "ON") led_on();
     if(messageTemp == "OFF")  led_off();
+    delay_flag = false;
+    check_flag = false;
   }
   else if(!strcmp(topic, topicSetDistance.c_str())){
     Distance = atoi(messageTemp.c_str());
