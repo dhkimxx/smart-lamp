@@ -1,6 +1,7 @@
 import 'package:client/screens/home_screen.dart';
 import 'package:client/screens/join_screen.dart';
 import 'package:client/screens/login_screen.dart';
+import 'package:client/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
 
 void navigateToHomeScreen(context) {
@@ -24,5 +25,13 @@ void navigateToLoginScreen(context) {
       builder: (context) => const LoginScreen(),
     ),
     (route) => false,
+  );
+}
+
+void navigateToSettingScreen(context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const SettingScreen(),
+    ),
   );
 }

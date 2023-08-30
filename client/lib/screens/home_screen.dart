@@ -67,7 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  navigateToSettingScreen(context);
+                },
                 icon: const Icon(Icons.account_tree_outlined),
               )
             ],
