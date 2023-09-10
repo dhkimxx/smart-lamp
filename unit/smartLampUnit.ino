@@ -2,12 +2,10 @@
 #include <PubSubClient.h>
 #define _CRT_SECURE_NO_WARNINGS
 
-const char* ssid = "921-2.4G";
-const char* password = "kpu123456!";
-// const char* ssid = "myhomewifi2.4g";
-// const char* password = "wifi82825535";
+const char* ssid = "myhomewifi2.4g";
+const char* password = "wifi82825535";
 const char* mqtt_server = "13.124.243.209";
-const int port = 58355;
+const int port = 54679;
 
 String clientId = "100";
 String topicOrder = clientId;
@@ -17,11 +15,12 @@ String topicSetBrightness = "setBrightness/" + clientId;
 
 int Distance = 50;  // default detection distance 50cm
 int Time = 10000;  // default led on time 10sec (10000msec)
-float Brightness = 5; // Brightness scope: 0~10 stemp, analogWrite: 1023 * (1 - Brightness / 10)
+float Brightness = 1; // Brightness scope: 0~10 stemp, analogWrite: 1023 * (1 - Brightness / 10)
 
-const int LED = 2;
-const int TRIG = 16;
-const int ECHO = 15;
+const int LED = 2; //D4
+const int TRIG = 16; //D0
+const int ECHO = 15; //D8
+const int PIR = 5; //D1
 
 unsigned long loop_time_previous = 0;
 unsigned long check_time_previous = 0;
@@ -80,11 +79,10 @@ void setup_wifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    digitalWrite(BUILTIN_LED, LOW);
     delay(500);
     Serial.print(".");
   }
-  digitalWrite(BUILTIN_LED, HIGH);
+  
   randomSeed(micros());
   Serial.println("");
   Serial.println("WiFi connected");
@@ -161,6 +159,7 @@ void setup() {
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
   
+  digitalWrite(BUILTIN_LED, HIGH);
   setup_wifi();
   client.setServer(mqtt_server, port);
   client.setCallback(callback);
@@ -174,8 +173,13 @@ void loop() {
   client.loop();
 
   delay(100);
+
+
+
   if(!delay_flag && hc_sr04(Distance)){
     led_on();
+      //int pir = digitalRead(PIR);
+      //Serial.print(pir);
     loop_time_previous = millis();
     delay_flag = true;
     check_flag = false;
