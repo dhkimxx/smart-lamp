@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
         loadingDialog(context: context, text: "사용자 정보를 가져오는 중...");
         final userInfo = await loginUser(userId, userPw);
         await setUserInfoPrefs(userInfo);
+        print(userInfo);
         await setIsLoginedPrefs(true);
         if (!mounted) return;
         navigateToHomeScreen(context);

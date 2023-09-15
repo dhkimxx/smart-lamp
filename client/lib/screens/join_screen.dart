@@ -14,6 +14,7 @@ class _JoinScreenState extends State<JoinScreen> {
   final _formKey = GlobalKey<FormState>();
   final _userIdController = TextEditingController();
   final _userNameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _userPwController = TextEditingController();
   final _userPwCheckController = TextEditingController();
 
@@ -21,6 +22,7 @@ class _JoinScreenState extends State<JoinScreen> {
   void dispose() {
     _userIdController.dispose();
     _userNameController.dispose();
+    _phoneController.dispose();
     _userPwController.dispose();
     _userPwCheckController.dispose();
     super.dispose();
@@ -31,10 +33,11 @@ class _JoinScreenState extends State<JoinScreen> {
       final userId = _userIdController.text;
       final userPw = _userPwController.text;
       final userName = _userNameController.text;
+      final phone = _phoneController.text;
 
       try {
         loadingDialog(context: context, text: "사용자 등록 요청중...");
-        await joinUser(userId, userPw, userName);
+        await joinUser(userId, userPw, userName, phone);
         if (!mounted) return;
         navigateToLoginScreen(context);
         alterDialog(
@@ -138,6 +141,37 @@ class _JoinScreenState extends State<JoinScreen> {
                           floatingLabelAlignment: FloatingLabelAlignment.center,
                           border: InputBorder.none,
                           labelText: '이름',
+                          labelStyle: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.purple[100],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        controller: _phoneController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '휴대폰 번호를 입력하세요.';
+                          } else if (value.length != 11) {
+                            return '01012345678 형식으로 입력하세요';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                          border: InputBorder.none,
+                          labelText: '휴대폰 번호',
                           labelStyle: TextStyle(
                             color: Colors.purple,
                             fontWeight: FontWeight.w800,
