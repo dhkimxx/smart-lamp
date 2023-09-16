@@ -1,11 +1,14 @@
 #include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <PubSubClient.h>
+#include <ESP8266HTTPClient.h>
 #define _CRT_SECURE_NO_WARNINGS
 
 const char* ssid = "myhomewifi2.4g";
+//const char* ssid = "kdh";
 const char* password = "wifi82825535";
-const char* mqtt_server = "13.124.243.209";
-const int port = 54679;
+const char* mqtt_server = "18.214.206.169";
+const int port = 1883;
 
 String clientId = "100";
 String topicOrder = clientId;
@@ -16,6 +19,7 @@ String topicSetBrightness = "setBrightness/" + clientId;
 int Distance = 50;  // default detection distance 50cm
 int Time = 10000;  // default led on time 10sec (10000msec)
 float Brightness = 1; // Brightness scope: 0~10 stemp, analogWrite: 1023 * (1 - Brightness / 10)
+int WarningTime = 5;
 
 const int LED = 2; //D4
 const int TRIG = 16; //D0
@@ -24,15 +28,48 @@ const int PIR = 5; //D1
 
 unsigned long loop_time_previous = 0;
 unsigned long check_time_previous = 0;
-unsigned long check_time = 1000;
+unsigned long check_time = 500;
+unsigned long warning_time_previous = 0;
+unsigned long warning_time = WarningTime * 1000;
 
+ESP8266WiFiMulti WiFiMulti;
 WiFiClient espClient;
 PubSubClient client(espClient);
+String str = "a";
+
 unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE	(50)
 char msg[MSG_BUFFER_SIZE];
 bool delay_flag = false;
 bool check_flag = false;
+bool warning_flag = false;
+
+void http_request(){
+  WiFiClient client;
+  HTTPClient http;
+  Serial.print("[HTTP] begin...\n");
+    if (http.begin(client, "http://18.214.206.169:8080/send-test")) {  // HTTP
+      Serial.print("[HTTP] POST...\n");
+      // start connection and send HTTP header
+      http.addHeader("Content-Type", "application/json");
+      int httpCode = http.POST("{\"unitCode\":" + clientId +  "}");
+      // httpCode will be negative on error
+      if (httpCode > 0) {
+        // HTTP header has been send and Server response header has been handled
+        Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+        // file found at server
+        if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+          String payload = http.getString();
+          Serial.println(payload);
+        }
+      } else {
+        Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+      }
+      http.end();
+    } else {
+      Serial.printf("[HTTP} Unable to connect\n");
+    }
+}
 
 void led_on(){
   digitalWrite(BUILTIN_LED, 1023 * (1 - Brightness / 10));
@@ -52,6 +89,10 @@ void led_off(){
   client.publish("state", msg);
 }
 
+int pir(){
+  return digitalRead(PIR);
+}
+
 int hc_sr04(int target_distance){
   long duration, distance;
   digitalWrite(TRIG, LOW);
@@ -60,7 +101,7 @@ int hc_sr04(int target_distance){
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
   duration = pulseIn(ECHO, HIGH);
-  distance = duration * 17 / 1000;
+  distance = duration * 0.034 / 2;
   if(distance <= target_distance){
     Serial.print("\nDistance: ");
     Serial.print(distance);
@@ -69,25 +110,6 @@ int hc_sr04(int target_distance){
   }else{
     return 0;
   }
-}
-
-void setup_wifi() {
-  delay(10);
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  
-  randomSeed(micros());
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -136,7 +158,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
-    if (client.connect(clientId.c_str())) {
+    
+    if (client.connect(str.c_str())) {
       Serial.println("connected");
       client.publish("login", clientId.c_str());
       client.subscribe(topicOrder.c_str());
@@ -146,10 +169,38 @@ void reconnect() {
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      delay(500);
+      Serial.print(" try again in 5 seconds");
+      Serial.print("(");
+      for(int i = 1; i <= 5; i++){
+        Serial.print(i);
+        Serial.print("...");
+        delay(1000);
+      }
+      Serial.println(")");
+      str = str + "a";
+      Serial.println(str);
     }
   }
+}
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.mode(WIFI_STA);
+  //WiFi.begin(ssid, password);
+  WiFiMulti.addAP(ssid, password);
+  while ((WiFiMulti.run() != WL_CONNECTED)) {
+    delay(500);
+    Serial.print(".");
+  }
+  
+  randomSeed(micros());
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void setup() {
@@ -166,7 +217,7 @@ void setup() {
 }
 
 void loop() {
-  delay(10);
+  
   if (!client.connected()) {
     reconnect();
   }
@@ -174,24 +225,37 @@ void loop() {
 
   delay(100);
 
+  if(hc_sr04(Distance)){
+    if(warning_flag){
+      Serial.println(millis() - warning_time_previous);
+      if((millis() - warning_time_previous) > warning_time){
+        Serial.println("Http Request!!");
+        http_request();
+        delay(1000);
+        warning_flag = false;
+      }
+    } else{
+      warning_flag = true;
+      warning_time_previous = millis();
+    }
+  } else{
+        warning_flag = false;
+  }
+  
+  delay(100);
 
-
-  if(!delay_flag && hc_sr04(Distance)){
+  if(!delay_flag && pir()){
     led_on();
-      //int pir = digitalRead(PIR);
-      //Serial.print(pir);
     loop_time_previous = millis();
     delay_flag = true;
     check_flag = false;
   }
 
-  if(delay_flag) Serial.println(millis() - loop_time_previous);
-
   if(delay_flag && (millis() - loop_time_previous >= Time)){
     led_off();
     delay_flag = false;
   }
-  
+
   if (check_flag && (millis() - check_time_previous >= check_time)){
     analogWrite(LED, 1023);
     check_flag = false;
