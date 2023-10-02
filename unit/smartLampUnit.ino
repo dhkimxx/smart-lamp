@@ -19,7 +19,6 @@ String topicOrder = clientId;
 String topicSetDistance = "setDistance/" + clientId;
 String topicSetTime = "setTime/" + clientId;
 String topicSetBrightness = "setBrightness/" + clientId;
-String topicSetWarningTime = "setWarningTime" + clientId;
 
 int Distance = 50;  // Default detection distance: 50cm
 int Time = 10000;  // Default led on time: 10sec (10000msec)
@@ -150,11 +149,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       check_time_previous = millis();
       analogWrite(LED, 1023 * (1 - Brightness / 10));
     }
-  }
-  else if(!strcmp(topic, topicSetWarningTime.c_str())){
-    WarningTime = atoi(messageTemp.c_str());
-    Serial.print("set WarningTime: ");
-    Serial.println(WarningTime);
   }
 }
 
