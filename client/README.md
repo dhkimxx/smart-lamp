@@ -1,16 +1,47 @@
-# client
+# Smart Lamp Mobile Application
 
-A new Flutter project.
+## 프로젝트 구조
 
-## Getting Started
+```
+lib
+ ┣ models
+ ┃ ┗ unit_model.dart
+ ┣ navigator
+ ┃ ┗ screen_navigator.dart
+ ┣ screens
+ ┃ ┣ add_unit_screen.dart
+ ┃ ┣ home_screen.dart
+ ┃ ┣ join_screen.dart
+ ┃ ┣ login_screen.dart
+ ┃ ┣ setting_screen.dart
+ ┃ ┗ unit_detail_screen.dart
+ ┣ service
+ ┃ ┣ api_service.dart
+ ┃ ┣ mqtt_service.dart
+ ┃ ┗ prefs_service.dart
+ ┣ widgets
+ ┃ ┣ dialog_widget.dart
+ ┃ ┗ unit_widget.dart
+ ┗ main.dart
+```
 
-This project is a starting point for a Flutter application.
+## 주요 기능 및 화면 구성
 
-A few resources to get you started if this is your first Flutter project:
+* 로그인 화면
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+  ![](../img/login.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* 회원가입 화면
+
+  ![](../img/signup.png)
+* 메인 화면
+
+  ![](../img/home.png)
+
+* 디바이스 추가 화면
+
+  ![](../img/deviceCreate.png)
+
+* 디바이스 제어 화면
+
+  ![](../img/deviceDetail.png)
