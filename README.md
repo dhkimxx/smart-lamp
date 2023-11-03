@@ -26,8 +26,9 @@
 ## 아키텍쳐
 
 ### 구성
-* Backend : [Spring REST API Server](https://github.com/dhkimxx/smartLampServer)  
+
 * Frontend : [Flutter  Application](./client/)
+* Backend : [Spring REST API Server](https://github.com/dhkimxx/smartLampServer)  
 * Device : [Wemos D1 mini(Arduino)](./unit/smartLampUnit.ino)
 
 ### 다이어그램
