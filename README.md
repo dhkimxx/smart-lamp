@@ -23,13 +23,13 @@
 * 노인 인구가 전 세계적으로 증가하는 추세에 따라 이와 같은노인들을 위한 안전사고 예방 솔루션의 시장 수요가 증가할 것으로 예상된다.  
 
 
-## 아키텍쳐
+## 아키텍쳐 
 
-### 구성
-
-* Frontend : [Flutter  Application](./client/)
-* Backend : [Spring REST API Server](https://github.com/dhkimxx/smartLampServer)  
-* Device : [Wemos D1 mini(Arduino)](./unit)
+| 구성      | 링크 |
+|----------|-----|
+| Frontend | [Flutter  Application](./client/) |
+| Backend  | [Spring REST API Server](https://github.com/dhkimxx/smartLampServer) |
+| Device   | [Wemos D1 mini(Arduino)](./unit/) |
 
 ### 다이어그램
 
