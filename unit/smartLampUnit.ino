@@ -1,8 +1,8 @@
-#include <ESP8266WiFi.h>
+// #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
 #include <PubSubClient.h>
 #include <ESP8266HTTPClient.h>
-//#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 const int LED = 2; //D4
 const int TRIG = 16; //D0
@@ -11,8 +11,8 @@ const int PIR = 5; //D1
 
 const char* ssid = "myhomewifi2.4g";
 const char* password = "wifi82825535";
-const char* mqtt_server = "13.209.242.126";
-const int port = 54305;
+const char* mqtt_server = "20.163.15.199";
+const int port = 1883;
 
 String clientId = "100";
 String topicOrder = clientId;
@@ -45,10 +45,11 @@ void http_request(){
   WiFiClient client;
   HTTPClient http;
   Serial.print("[HTTP] begin...\n");
-    if (http.begin(client, "https://tuk-smartlamp.run.goorm.site/send-one")) {  // HTTP
+    if (http.begin(client, "http://20.163.15.199:8080/send-test")) {  // HTTP
       Serial.print("[HTTP] POST...\n");
       // start connection and send HTTP header
       http.addHeader("Content-Type", "application/json");
+      Serial.print("{\"unitCode\":" + clientId +  "}");
       int httpCode = http.POST("{\"unitCode\":" + clientId +  "}");
       // httpCode will be negative on error
       if (httpCode > 0) {
@@ -158,7 +159,7 @@ void reconnect() {
     
     if (client.connect("")) {
       Serial.println("connected");
-      client.publish("login", clientId.c_str());
+      client.publish("mmmm", clientId.c_str());
       client.subscribe(topicOrder.c_str());
       client.subscribe(topicSetDistance.c_str());
       client.subscribe(topicSetTime.c_str());
