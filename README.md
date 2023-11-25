@@ -33,14 +33,14 @@
 
 ### 다이어그램
 
-![](https://github.com/dhkimxx/smartLamp/assets/79616878/95d699e5-c1e7-457a-8eb5-ffe34be5769e)
+![](./img/_smartlamp.drawio.png)
 
 ## 개발 환경
 
 | Target        | Version     |
 |---------------|-------------|
-| Ubuntu(Cloud) | 20.04.6 LTS |
-| MySQL(Cloud)  | 8.0.35      |
+| Ubuntu(Azure) | 20.04.6 LTS |
+| MySQL(Azure)  | 8.0.35      |
 | Java          | openjdk 11  |
 | Spring boot   | 2.7.10      |
 | Dart          | 2.19.5      |
