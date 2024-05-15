@@ -1,5 +1,4 @@
-# Smart Lamp
-논문: [한국공학대학교 종합설계 졸업작품](./스마트무드등-김도형.pdf)
+# Smart Lamp Project
 
 ## 프로젝트 소개
 ### 개발배경  
@@ -22,18 +21,123 @@
 
 * 노인 인구가 전 세계적으로 증가하는 추세에 따라 이와 같은노인들을 위한 안전사고 예방 솔루션의 시장 수요가 증가할 것으로 예상된다.  
 
+## 관련 문서
+* [한국공학대학교 종합설계 졸업작품](./paper.pdf)
 
 ## 아키텍쳐 
 
 | 구성      | 링크 |
 |----------|-----|
 | Frontend | [Flutter  Application](./client/) |
-| Backend  | [Spring REST API Server](https://github.com/dhkimxx/smartLampServer) |
-| Device   | [Wemos D1 mini(Arduino)](./unit/) |
+| Backend  | [Spring REST API Server](./server/) |
+| Device   | [Wemos D1 mini(Arduino)](./device/) |
 
 ### 다이어그램
 
 ![](./img/_smartlamp.drawio.png)
+
+### 브레드보드 및 회로 구성도
+<div style="display:flex; gap:10px;">
+    <img src="./img/breadboard.jpg" style="width:50%;">
+    <img src="./img/circuitdiagram.jpg" style="width:50%;">
+</div>
+
+## 데모 모델
+
+![](./img/prototype.jpeg)
+
+
+## 어플리케이션 화면 구성
+
+<div style="display:flex; gap:10px; height: 500px;">
+    <div style="text-align:center;">
+        <img src="./img/home.png" >
+        <p>메인</p>
+    </div>
+    <div style="text-align:center;">
+        <img src="./img/login.png" >
+        <p>로그인</p>
+    </div>
+    <div style="text-align:center;">
+        <img src="./img/signup.png" >
+        <p>회원가입</p>
+    </div>
+</div>
+
+<div style="display:flex; gap:10px; height: 500px;">
+    <div style="text-align:center;">
+        <img src="./img/deviceCreate.png"  >
+        <p>디바이스 생성</p>
+    </div>
+    <div style="text-align:center;">
+        <img src="./img/deviceDetail.png" >
+        <p>디바이스 제어</p>
+    </div>
+    <div></div>
+</div>
+
+<div style="height: 50px;"></div>
+
+## 데이터베이스 스키마
+
+<div style="display:flex; text-align:start; justify-content: space-between;">
+    <table style="margin-right: 20px; width: 50% ">
+        <caption style="text-align:start; font-size:18px; font-weight: 700;">User</caption>
+        <tr>
+            <th>컬럼명</th>
+            <th>설명</th>
+        </tr>
+        <tr>
+            <td>user_id</td>
+            <td>사용자 고유 아이디</td>
+        </tr>
+        <tr>
+            <td>user_pw</td>
+            <td>사용자 비밀번호</td>
+        </tr>
+        <tr>
+            <td>user_name</td>
+            <td>사용자 이름</td>
+        </tr>
+        <tr>
+            <td>phone</td>
+            <td>사용자 전화번호</td>
+        </tr>
+    </table>
+    <table style="width: 50% ">
+        <caption style="text-align:start; font-size:18px; font-weight: 700;">Device</caption>
+        <tr>
+            <th>컬럼명</th>
+            <th>설명</th>
+        </tr>
+        <tr>
+            <td>unitCode</td>
+            <td>디바이스 고유 코드</td>
+        </tr>
+        <tr>
+            <td>unit_name</td>
+            <td>디바이스 이름</td>
+        </tr>
+        <tr>
+            <td>brightness</td>
+            <td>램프 밝기</td>
+        </tr>
+        <tr>
+            <td>distance</td>
+            <td>탐지 거리</td>
+        </tr>
+        <tr>
+            <td>time</td>
+            <td>점등 시간</td>
+        </tr>
+        <tr>
+            <td>user_id</td>
+            <td>사용자 아이디</td>
+        </tr>
+    </table>
+</div>
+
+
 
 ## 개발 환경
 
