@@ -48,34 +48,15 @@
 
 
 ## 어플리케이션 화면 구성
+| 메인 | 로그인 | 회원가입 |
+|:---:|:---:|:---:|
+| ![메인](./img/home.png) | ![로그인](./img/login.png) | ![회원가입](./img/signup.png) |
 
-<div style="display:flex; gap:10px; text-align:center;">
-    <div>
-        <img src="./img/home.png" style="width: 33.33%">
-        <p>메인</p>
-    </div>
-    <div>
-        <img src="./img/login.png" style="width: 33.33%">
-        <p>로그인</p>
-    </div>
-    <div>
-        <img src="./img/signup.png" style="width: 33.33%">
-        <p>회원가입</p>
-    </div>
-</div>
 
-<div style="display:flex; gap:10px; text-align:center;">
-    <div>
-        <img src="./img/deviceCreate.png" style="width: 33.33%">
-        <p>디바이스 생성</p>
-    </div>
-    <div>
-        <img src="./img/deviceDetail.png" style="width: 33.33%">
-        <p>디바이스 제어</p>
-    </div>
-</div>
 
-<div style="height: 50px;"></div>
+| 디바이스 생성 | 디바이스 제어 |
+|:---:|:---:|
+| ![디바이스 생성](./img/deviceCreate.png) | ![디바이스 제어](./img/deviceDetail.png) |
 
 ## 데이터베이스 스키마
 
