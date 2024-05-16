@@ -49,16 +49,16 @@
 
 ## 어플리케이션 화면 구성
 
-<div style="display:flex; gap:10px;">
-    <div style="text-align:center; width: 30%">
+<div style="display:flex; gap:10px; width: 100%;">
+    <div style="text-align:center; width: 33.33%">
         <img src="./img/home.png" >
         <p>메인</p>
     </div>
-    <div style="text-align:center; width: 30%">
+    <div style="text-align:center; width: 33.33%">
         <img src="./img/login.png" >
         <p>로그인</p>
     </div>
-    <div style="text-align:center; width: 30%">
+    <div style="text-align:center; width: 33.33%">
         <img src="./img/signup.png" >
         <p>회원가입</p>
     </div>
