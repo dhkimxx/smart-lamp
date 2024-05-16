@@ -32,27 +32,22 @@
 | Backend  | [Spring REST API Server](./server/) |
 | Device   | [Wemos D1 mini(Arduino)](./device/) |
 
-### 다이어그램
-
 ![](./img/_smartlamp.drawio.png)
 
-### 브레드보드 및 회로 구성도
 
-| 브레드보드 | 회로도 |
+
+## 디바이스 제작 결과물
+
+| 디바이스 | 회로도 |
 |:---:|:---:|
-| ![브레드보드](./img/breadboard.jpg) | ![회로도](./img/circuitdiagram.jpg) |
+| ![디바이스](./img/prototype.jpeg) | ![회로도](./img/circuitdiagram.jpg) |
 
-## 데모 모델
-
-![](./img/prototype.jpeg)
 
 
 ## 어플리케이션 화면 구성
 | 메인 | 로그인 | 회원가입 |
 |:---:|:---:|:---:|
 | ![메인](./img/home.png) | ![로그인](./img/login.png) | ![회원가입](./img/signup.png) |
-
-
 
 | 디바이스 생성 | 디바이스 제어 |
 |:---:|:---:|
