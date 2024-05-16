@@ -38,8 +38,8 @@
 
 ### 브레드보드 및 회로 구성도
 <div style="display:flex; gap:10px;">
-    <img src="./img/breadboard.jpg" style="width:50%;">
-    <img src="./img/circuitdiagram.jpg" style="width:50%;">
+    <img src="./img/breadboard.jpg" style="width:45%;">
+    <img src="./img/circuitdiagram.jpg" style="width:45%;">
 </div>
 
 ## 데모 모델
@@ -50,26 +50,26 @@
 ## 어플리케이션 화면 구성
 
 <div style="display:flex; gap:10px; height: 500px;">
-    <div style="text-align:center;">
+    <div style="text-align:center; width: 30%">
         <img src="./img/home.png" >
         <p>메인</p>
     </div>
-    <div style="text-align:center;">
+    <div style="text-align:center; width: 30%">
         <img src="./img/login.png" >
         <p>로그인</p>
     </div>
-    <div style="text-align:center;">
+    <div style="text-align:center; width: 30%">
         <img src="./img/signup.png" >
         <p>회원가입</p>
     </div>
 </div>
 
 <div style="display:flex; gap:10px; height: 500px;">
-    <div style="text-align:center;">
+    <div style="text-align:center; width: 45%">
         <img src="./img/deviceCreate.png"  >
         <p>디바이스 생성</p>
     </div>
-    <div style="text-align:center;">
+    <div style="text-align:center; width: 45%">
         <img src="./img/deviceDetail.png" >
         <p>디바이스 제어</p>
     </div>
