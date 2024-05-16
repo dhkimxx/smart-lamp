@@ -49,22 +49,30 @@
 
 ## 어플리케이션 화면 구성
 
-<div style="display:flex; gap:10px; text">
-    <p>메인</p>
-    <p>로그인</p>
-    <p>회원가입</p>
-    <p>디바이스 생성</p>
-    <p>디바이스 제어</p>
+<div style="display:flex; gap:10px; text-align:center;">
+    <div>
+        <img src="./img/home.png" style="width: 33.33%">
+        <p>메인</p>
+    </div>
+    <div>
+        <img src="./img/login.png" style="width: 33.33%">
+        <p>로그인</p>
+    </div>
+    <div>
+        <img src="./img/signup.png" style="width: 33.33%">
+        <p>회원가입</p>
+    </div>
 </div>
-<div style="display:flex; gap:10px;">
-    <img src="./img/home.png" style="width: 30%">
-    <img src="./img/login.png" style="width: 30%">
-    <img src="./img/signup.png" style="width: 30%">
-</div>
-<div style="display:flex; gap:10px;">
-    <img src="./img/deviceCreate.png" style="width: 30%">
-    <img src="./img/deviceDetail.png" style="width: 30%">
-    <img style="width: 30%">
+
+<div style="display:flex; gap:10px; text-align:center;">
+    <div>
+        <img src="./img/deviceCreate.png" style="width: 33.33%">
+        <p>디바이스 생성</p>
+    </div>
+    <div>
+        <img src="./img/deviceDetail.png" style="width: 33.33%">
+        <p>디바이스 제어</p>
+    </div>
 </div>
 
 <div style="height: 50px;"></div>
