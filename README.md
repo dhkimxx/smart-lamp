@@ -37,10 +37,10 @@
 ![](./img/_smartlamp.drawio.png)
 
 ### 브레드보드 및 회로 구성도
-<div style="display:flex; gap:10px;">
-    <img src="./img/breadboard.jpg" style="width:45%;">
-    <img src="./img/circuitdiagram.jpg" style="width:45%;">
-</div>
+
+| 브레드보드 | 회로도 |
+|:---:|:---:|
+| ![브레드보드](./img/breadboard.jpg) | ![회로도](./img/circuitdiagram.jpg) |
 
 ## 데모 모델
 
